@@ -52,7 +52,7 @@ function RouteConfigExample() {
             </nav>
             <nav class="navbar navbar-light bg-light">
               <Link class="navbar-brand mb-0 h1" to="/formlist">
-                List Of the form
+                List of the submissions
               </Link>
             </nav>
           </div>
