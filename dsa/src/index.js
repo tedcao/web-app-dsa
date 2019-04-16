@@ -1,175 +1,70 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import SubmitForm from "./views/submitform/form";
+import Listing from "./views/listing/listing";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.css";
 
-// class Square extends React.Component {
-//   constructor() {
-//     super(); //inroder to use this data from parent
-//     this.state = {
-//       value: null
-//     };
-//   }
-//   render() {
-//     return (
-//       <button className="square" onClick={() => this.props.onClick()}>
-//         {this.props.value}
-//       </button>
-//     );
-//   }
-// }
+////////////////////////////////////////////////////////////
+// then our route config
+const routes = [
+  {
+    path: "/submitform",
+    component: SubmitForm
+  },
+  {
+    path: "/formlist",
+    component: Listing
+  }
+];
 
-function Square(props) {
+// wrap <Route> and use this everywhere instead, then when
+// sub routes are added to any route it'll work
+function RouteWithSubRoutes(route) {
   return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
-    </button>
+    <Route
+      path={route.path}
+      render={props => (
+        // pass the sub-routes down to keep nesting
+        <route.component {...props} routes={route.routes} />
+      )}
+    />
   );
 }
 
-function caculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (
-      squares[a] &&
-      (squares[a] === squares[b] && squares[b]) === squares[c]
-    ) {
-      return squares[a];
-    }
-  }
-  return null;
-}
-
-class Board extends React.Component {
-  renderSquare(i) {
-    return (
-      <Square
-        value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
-      />
-    );
-  }
-  render() {
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
+function RouteConfigExample() {
+  return (
+    <Router>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h1>
+              WEB-APP-DSA <span class="badge badge-primary">New</span>
+            </h1>
+          </div>
         </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
+        <div class="row">
+          <div class="col-3">
+            <nav class="navbar navbar-light bg-light">
+              <Link class="navbar-brand mb-0 h1" to="/submitform">
+                Student Submit From
+              </Link>
+            </nav>
+            <nav class="navbar navbar-light bg-light">
+              <Link class="navbar-brand mb-0 h1" to="/formlist">
+                List Of the form
+              </Link>
+            </nav>
+          </div>
+          <div class="col-9">
+            {routes.map((route, i) => (
+              <RouteWithSubRoutes key={i} {...route} />
+            ))}
+          </div>
         </div>
       </div>
-    );
-  }
+    </Router>
+  );
 }
 
-class Game extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      history: [
-        {
-          squares: Array(9).fill(null)
-        }
-      ],
-      xIsNext: true,
-      stepNumber: 0
-    };
-  }
-  handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
-    const squares = current.squares.slice();
-    if (caculateWinner(squares) || squares[i]) {
-      return;
-    }
-    squares[i] = this.state.xIsNext ? "X" : "O";
-    this.setState({
-      history: history.concat([
-        {
-          squares: squares
-        }
-      ]),
-      stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
-    });
-  }
-  jumpTo(step) {
-    this.setState({
-      stepNumber: step,
-      xIsNext: step % 2 ? false : true
-    });
-  }
-  render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
-    const winner = caculateWinner(current.squares);
-    const moves = history.map((step, move) => {
-      const desc = move ? "Move #" + move : "Game Start";
-      return (
-        <li key={move}>
-          <a href="#" onClick={() => this.jumpTo(move)}>
-            {desc}
-          </a>
-        </li>
-      );
-    });
-
-    let status;
-    if (winner) {
-      status = "Winner" + winner;
-    } else {
-      status = "Next player: " + (this.state.xIsNext ? "X" : "O");
-    }
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board squares={current.squares} onClick={i => this.handleClick(i)} />
-          <ShoppingList />
-        </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <ol>{moves}}</ol>
-        </div>
-      </div>
-    );
-  }
-}
-
-// ========================================
-
-class ShoppingList extends React.Component {
-  render() {
-    return (
-      <div className="shopping-list">
-        <h1>Shopping List for {this.props.name}</h1>
-        <ul>
-          <li>Instagram</li>
-          <li>WhatsApp</li>
-          <li>Oculus</li>
-        </ul>
-      </div>
-    );
-  }
-}
-
-ReactDOM.render(<Game />, document.getElementById("root"));
+ReactDOM.render(<RouteConfigExample />, document.getElementById("root"));
