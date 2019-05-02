@@ -56,11 +56,11 @@ exports.update = function(req, res) {
     enrollment.term = req.body.term;
     enrollment.student = req.body.student;
 
-    // save the contact and check for errors
-    contact.save(function(err) {
+    // save the Enrollment information and check for errors
+    enrollment.save(function(err) {
       if (err) res.json(err);
       res.json({
-        message: "Contact Info updated",
+        message: "Enrollment Info updated",
         data: enrollment
       });
     });
@@ -78,15 +78,18 @@ exports.delete = function(req, res) {
 
       res.json({
         status: "success",
-        message: "Contact deleted"
+        message: "Enrollment information deleted"
       });
     }
   );
 };
 
-// return course tooken by student
-exports.course = function(req, res) {
-  Enrollment.findById(req.params.student_id, function(err, enrollment) {
+// return enrollment information of particular student
+exports.enrollment = function(req, res) {
+  Enrollment.find({ student: req.params.student_id }, function(
+    err,
+    enrollment
+  ) {
     if (err) res.send(err);
     res.json({
       message: "Student course details loading..",
