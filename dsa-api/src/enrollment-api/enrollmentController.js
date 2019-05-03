@@ -18,7 +18,7 @@ exports.index = function(req, res) {
 };
 
 // Handle create enrollment actions
-exports.new = function(req, res) {
+exports.insert = function(req, res) {
   var enrollment = new Enrollment();
   enrollment.course = req.body.course ? req.body.course : enrollment.course;
   enrollment.section = req.body.section;
@@ -30,17 +30,6 @@ exports.new = function(req, res) {
     if (err) res.json(err);
     res.json({
       message: "New enrollment created!",
-      data: enrollment
-    });
-  });
-};
-
-// Handle view enrollment info (find enrollment record based on id)
-exports.view = function(req, res) {
-  Enrollment.findById(req.params.enrollment_id, function(err, enrollment) {
-    if (err) res.send(err);
-    res.json({
-      message: "Enrollment details loading..",
       data: enrollment
     });
   });

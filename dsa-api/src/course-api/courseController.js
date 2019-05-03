@@ -18,7 +18,7 @@ exports.index = function(req, res) {
 };
 
 // Handle create course actions
-exports.new = function(req, res) {
+exports.insert = function(req, res) {
   var course = new Course();
   course.course = req.body.course ? req.body.course : course.course;
   course.section = req.body.section;
@@ -31,17 +31,6 @@ exports.new = function(req, res) {
     if (err) res.json(err);
     res.json({
       message: "New course created!",
-      data: course
-    });
-  });
-};
-
-// // Handle view enrollment info (find enrollment record based on id)
-exports.view = function(req, res) {
-  Course.findById(req.params.course_id, function(err, course) {
-    if (err) res.send(err);
-    res.json({
-      message: "Course details loading..",
       data: course
     });
   });

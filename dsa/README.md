@@ -1,3 +1,8 @@
+Program reqirements:
+
+Upload file up to three
+Have two interface: submit form and list information, routing.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
