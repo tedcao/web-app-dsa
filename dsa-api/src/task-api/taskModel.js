@@ -18,6 +18,17 @@ var taskSchema = mongoose.Schema({
     type: String,
     require: true
   },
+  student_email: {
+    type: String,
+    require: true
+  },
+  student_phone: {
+    type: Number
+  },
+  home_faculty: {
+    type: String,
+    require: true
+  },
   instructor: {
     type: String,
     require: true
@@ -25,6 +36,9 @@ var taskSchema = mongoose.Schema({
   supervisor: {
     type: String,
     require: true
+  },
+  file: {
+    type: String
   },
   approve: {
     type: Boolean,

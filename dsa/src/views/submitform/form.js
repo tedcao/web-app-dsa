@@ -2,10 +2,10 @@ import "./helper.css";
 import React from "react";
 import { withFormik } from "formik";
 import * as Yup from "yup";
-import Select from "react-select";
 import "react-select/dist/react-select.css";
-
-import { DisplayFormikState } from "./helper";
+import { DisplayFormikState } from "./help";
+import { FacultySelect, CourseSelect } from "./help";
+import axios from "axios";
 
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
@@ -48,263 +48,179 @@ const formikEnhancer = withFormik({
       setSubmitting(false);
     }, 1000);
   },
+
   displayName: "MyForm"
 });
 
-const MyForm = props => {
-  const {
-    values,
-    touched,
-    dirty,
-    errors,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    handleReset,
-    setFieldValue,
-    setFieldTouched,
-    isSubmitting
-  } = props;
-  return (
-    <form onSubmit={handleSubmit}>
-      <div class="form-group">
-        <label htmlFor="student_number">Student Number</label>
-        <input
-          class="form-control"
-          id="student_number"
-          placeholder="Enter your student number"
-          value={values.student_number}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {errors.student_number && touched.student_number && (
-          <div class="alert alert-danger">{errors.student_number}</div>
-        )}
-      </div>
-      <div class="form-group">
-        <label htmlFor="name">Name</label>
-        <input
-          class="form-control"
-          id="name"
-          placeholder="Please entre your legal name"
-          value={values.name}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {errors.name && touched.name && (
-          <div class="alert alert-danger">{errors.name}</div>
-        )}
-      </div>
-      <div class="form-group">
-        <FacultySelect
-          class="form-control"
-          value={values.home_faculty}
-          onChange={setFieldValue}
-          onBlur={setFieldTouched}
-          error={errors.home_faculty}
-          touched={touched.home_faculty}
-        />
-      </div>
-      <div class="form-group">
-        <label htmlFor="phone">Phone</label>
-        <input
-          class="form-control"
-          id="phone"
-          placeholder="Please entre your phone number"
-          value={values.phone}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {errors.phone && touched.phone && (
-          <div class="alert alert-danger">{errors.phone}</div>
-        )}
-      </div>
-      <div class="form-group">
-        <label id="email_label" htmlFor="email">
-          Email
-        </label>
-        <input
-          class="form-control"
-          id="email"
-          placeholder="Enter your email"
-          type="email"
-          value={values.email}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {errors.email && touched.email && (
-          <div class="alert alert-danger">{errors.email}</div>
-        )}
-      </div>
-      <div class="form-group">
-        <CourseSelect
-          class="form-control"
-          value={values.course}
-          onChange={setFieldValue}
-          onBlur={setFieldTouched}
-          error={errors.course}
-          touched={touched.course}
-        />
-      </div>
+class MyForm extends React.Component {
+  state = { courses: [] };
 
-      <div class="custom-file">
-        <input
-          class="custom-file-input"
-          type="file"
-          value={values.upload_file}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        <label
-          class="custom-file-label"
-          id="upload_files"
-          htmlFor="upload_files"
-        >
-          Please upload your application
-        </label>
-        {errors.upload_file && touched.upload_file && (
-          <div class="alert alert-danger">{errors.upload_file}</div>
-        )}
-      </div>
-
-      <div class="custom-control custom-checkbox">
-        <input
-          class="custom-control-input"
-          id="aggrement"
-          type="checkbox"
-          value={values.aggrement}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        <label
-          class="custom-control-label"
-          id="aggrement_label"
-          htmlFor="aggrement"
-        >
-          Check if you registered with Counselling/Disability services
-        </label>
-      </div>
-
-      <button
-        type="button"
-        className="outline btn btn-secondary btn-lg col-4"
-        onClick={handleReset}
-        disabled={!dirty || isSubmitting}
-      >
-        Reset
-      </button>
-      <button
-        class="btn btn-primary btn-lg col-4"
-        type="submit"
-        disabled={isSubmitting}
-      >
-        Submit
-      </button>
-
-      <DisplayFormikState {...props} />
-    </form>
-  );
-};
-
-const faculty_options = [
-  {
-    value: "School of the Arts, Media, Performance & Design",
-    label: "School of the Arts, Media, Performance & Design"
-  },
-  { value: "Faculty of Education", label: "Faculty of Education" },
-  {
-    value: "Faculty of Environmental Studies",
-    label: "Faculty of Environmental Studies"
-  },
-  { value: "Glendon", label: "Glendon" },
-  {
-    value: "Faculty of Graduate Studies",
-    label: "Faculty of Graduate Studies"
-  },
-  { value: "Faculty of Health", label: "Faculty of Health" },
-  {
-    value: "Lassonde School of Engineering",
-    label: "Lassonde School of Engineering"
-  },
-  {
-    value: "Faculty of Liberal Arts & Professional Studies",
-    label: "Faculty of Liberal Arts & Professional Studies"
-  },
-  { value: "Osgoode Hall Law School", label: "Osgoode Hall Law School" },
-  {
-    value: "Schulich School of Business",
-    label: "Schulich School of Business"
-  },
-  { value: "Faculty of Science", label: "Faculty of Science" }
-];
-
-class FacultySelect extends React.Component {
-  handleChange = value => {
-    // this is going to call setFieldValue and manually update values.topcis
-    this.props.onChange("home_faculty", value);
+  handleEmailFieldBlur = e => {
+    this.props.handleBlur(e);
+    this.CourseList(this.props.values.student_number);
   };
 
-  handleBlur = () => {
-    // this is going to call setFieldTouched and manually update touched.topcis
-    this.props.onBlur("home_faculty", true);
-  };
-
-  render() {
-    return (
-      <div style={{ margin: "1rem 0" }}>
-        <label htmlFor="color">Home Faculty</label>
-        <Select
-          id="color"
-          options={faculty_options}
-          multi={false}
-          onChange={this.handleChange}
-          onBlur={this.handleBlur}
-          value={this.props.value}
-        />
-        {!!this.props.error && this.props.touched && (
-          <div class="alert alert-danger">{this.props.error}</div>
-        )}
-      </div>
-    );
+  async CourseList(student_number) {
+    //use the student number to get the corresponding course information by using  /enrollment_search/:student_id
+    var url = `http://localhost:8080/api/enrollment_search/${student_number}`;
+    const response = await axios.post(url);
+    this.setState({ courses: response.data.data });
+    // console.log(this.state.courses);
   }
-}
-
-const course_options = [
-  { value: "Food", label: "Food" },
-  { value: "Being Fabulous", label: "Being Fabulous" },
-  { value: "Ken Wheeler", label: "Ken Wheeler" },
-  { value: "ReasonML", label: "ReasonML" },
-  { value: "Unicorns", label: "Unicorns" },
-  { value: "Kittens", label: "Kittens" }
-];
-
-class CourseSelect extends React.Component {
-  handleChange = value => {
-    // this is going to call setFieldValue and manually update values.topcis
-    this.props.onChange("course", value);
-  };
-
-  handleBlur = () => {
-    // this is going to call setFieldTouched and manually update touched.topcis
-    this.props.onBlur("course", true);
-  };
 
   render() {
+    const {
+      values,
+      touched,
+      dirty,
+      errors,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+      handleReset,
+      setFieldValue,
+      setFieldTouched,
+      isSubmitting
+    } = this.props;
     return (
-      <div style={{ margin: "1rem 0" }}>
-        <label htmlFor="color">Course</label>
-        <Select
-          id="color"
-          options={course_options}
-          multi={false}
-          onChange={this.handleChange}
-          onBlur={this.handleBlur}
-          value={this.props.value}
-        />
-        {!!this.props.error && this.props.touched && (
-          <div class="alert alert-danger">{this.props.error}</div>
-        )}
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="student_number">Student Number</label>
+          <input
+            className="form-control"
+            id="student_number"
+            placeholder="Enter your student number"
+            value={values.student_number}
+            onChange={handleChange}
+            onBlur={this.handleEmailFieldBlur}
+          />
+          {errors.student_number && touched.student_number && (
+            <div className="alert alert-danger">{errors.student_number}</div>
+          )}
+        </div>
+        <div className="form-group">
+          <label htmlFor="name">Name</label>
+          <input
+            className="form-control"
+            id="name"
+            placeholder="Please entre your legal name"
+            value={values.name}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {errors.name && touched.name && (
+            <div className="alert alert-danger">{errors.name}</div>
+          )}
+        </div>
+        <div className="form-group">
+          <FacultySelect
+            className="form-control"
+            value={values.home_faculty}
+            onChange={setFieldValue}
+            onBlur={setFieldTouched}
+            error={errors.home_faculty}
+            touched={touched.home_faculty}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="phone">Phone</label>
+          <input
+            className="form-control"
+            id="phone"
+            placeholder="Please entre your phone number"
+            value={values.phone}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {errors.phone && touched.phone && (
+            <div className="alert alert-danger">{errors.phone}</div>
+          )}
+        </div>
+        <div className="form-group">
+          <label id="email_label" htmlFor="email">
+            Email
+          </label>
+          <input
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+            type="email"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {errors.email && touched.email && (
+            <div className="alert alert-danger">{errors.email}</div>
+          )}
+        </div>
+        <div className="form-group">
+          <CourseSelect
+            className="form-control"
+            value={values.course}
+            onChange={setFieldValue}
+            onBlur={setFieldTouched}
+            error={errors.course}
+            touched={touched.course}
+            courses={this.state.courses}
+          />
+        </div>
+
+        <div className="custom-file">
+          <input
+            className="custom-file-input"
+            type="file"
+            value={values.upload_file}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <label
+            className="custom-file-label"
+            id="upload_files"
+            htmlFor="upload_files"
+          >
+            Please upload your application
+          </label>
+          {errors.upload_file && touched.upload_file && (
+            <div className="alert alert-danger">{errors.upload_file}</div>
+          )}
+        </div>
+
+        <div className="custom-control custom-checkbox">
+          <input
+            className="custom-control-input"
+            id="aggrement"
+            type="checkbox"
+            value={values.aggrement}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <label
+            className="custom-control-label"
+            id="aggrement_label"
+            htmlFor="aggrement"
+          >
+            Check if you registered with Counselling/Disability services
+          </label>
+        </div>
+
+        <button
+          type="button"
+          className="outline btn btn-secondary btn-lg col-4"
+          onClick={handleReset}
+          disabled={!dirty || isSubmitting}
+        >
+          Reset
+        </button>
+        <button
+          className="btn btn-primary btn-lg col-4"
+          type="submit"
+          disabled={isSubmitting}
+        >
+          Submit
+        </button>
+        {JSON.stringify(this.state.courses)}
+        <DisplayFormikState {...this.props} />
+      </form>
     );
   }
 }

@@ -35,28 +35,28 @@ function RouteWithSubRoutes(route) {
 function RouteConfigExample() {
   return (
     <Router>
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
             <h1>
-              WEB-APP-DSA <span class="badge badge-primary">New</span>
+              WEB-APP-DSA <span className="badge badge-primary">New</span>
             </h1>
           </div>
         </div>
-        <div class="row">
-          <div class="col-3">
-            <nav class="navbar navbar-light bg-light">
-              <Link class="navbar-brand mb-0 h1" to="/submitform">
+        <div className="row">
+          <div className="col-3">
+            <nav className="navbar navbar-light bg-light">
+              <Link className="navbar-brand mb-0 h1" to="/submitform">
                 Student Submit From
               </Link>
             </nav>
-            <nav class="navbar navbar-light bg-light">
-              <Link class="navbar-brand mb-0 h1" to="/formlist">
+            <nav className="navbar navbar-light bg-light">
+              <Link className="navbar-brand mb-0 h1" to="/formlist">
                 List of the submissions
               </Link>
             </nav>
           </div>
-          <div class="col-9">
+          <div className="col-9">
             {routes.map((route, i) => (
               <RouteWithSubRoutes key={i} {...route} />
             ))}

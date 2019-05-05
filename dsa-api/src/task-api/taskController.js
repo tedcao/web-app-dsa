@@ -24,8 +24,12 @@ exports.insert = function(req, res) {
   task.course = req.body.course;
   task.section = req.body.section;
   task.term = req.body.term;
+  task.student_email = req.body.student_email;
+  task.student_phone = req.body.student_phonel;
+  task.home_faculty = req.body.home_faculty;
   task.instructor = req.body.instructor;
   task.supervisor = req.body.supervisor;
+  task.file = req.body.file;
   task.approve = req.body.approve;
 
   // save the enrollment and check for errors
@@ -45,8 +49,12 @@ exports.update = function(req, res) {
     task.course = req.body.course;
     task.section = req.body.section;
     task.term = req.body.term;
+    task.student_email = req.body.student_email;
+    task.student_phone = req.body.student_phonel;
+    task.home_faculty = req.body.home_faculty;
     task.instructor = req.body.instructor;
     task.supervisor = req.body.supervisor;
+    task.file = req.body.file;
     task.approve = req.body.approve;
 
     task.save(function(err) {

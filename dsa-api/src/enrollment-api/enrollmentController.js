@@ -79,10 +79,28 @@ exports.enrollment = function(req, res) {
     err,
     enrollment
   ) {
-    if (err) res.send(err);
-    res.json({
-      message: "Student course details loading..",
-      data: enrollment
-    });
+    if (err) {
+      res.send(err);
+    } else {
+      res.json({
+        message: "Infomation retrived successfully. ",
+        data: formate(enrollment)
+      });
+    }
   });
 };
+
+function formate(enrollment) {
+  var length = enrollment.length;
+  var list = [];
+  var i;
+  for (i = 0; i < enrollment.length; i++) {
+    var result =
+      "Course: " +
+      enrollment[i].course +
+      "   Section: " +
+      enrollment[i].section;
+    list.push({ value: result, label: result });
+  }
+  return list;
+}
