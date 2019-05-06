@@ -3,9 +3,22 @@ import React from "react";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import "react-select/dist/react-select.css";
-import { DisplayFormikState } from "./help";
-import { FacultySelect, CourseSelect } from "./help";
+import {
+  DisplayFormikState,
+  FacultySelect,
+  CourseSelect,
+  ListThumb
+} from "./help";
 import axios from "axios";
+import Dropzone from "react-dropzone";
+const dropzoneStyle = {
+  width: "100%",
+  height: "auto",
+  borderWidth: 2,
+  borderColor: "rgb(102, 102, 102)",
+  borderStyle: "dashed",
+  borderRadius: 5
+};
 
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
@@ -25,9 +38,6 @@ const formikEnhancer = withFormik({
       .email("Invalid email address")
       .required("Email is required!"),
     course: Yup.string().required("Course is required!")
-    //validation of uploaded files, do it later.
-    // https://hackernoon.com/formik-handling-files-and-recaptcha-209cbeae10bc
-    // upload_file:Yup.object()
   }),
   mapPropsToValues: props => ({
     student_number: "",
@@ -37,7 +47,9 @@ const formikEnhancer = withFormik({
     email: "",
     course: "",
     aggrement: "",
-    upload_file: ""
+    // file: "",
+    // file2: "",
+    files: []
   }),
   handleSubmit: (values, { setSubmitting }) => {
     const payload = {
@@ -55,7 +67,7 @@ const formikEnhancer = withFormik({
 class MyForm extends React.Component {
   state = { courses: [] };
 
-  handleEmailFieldBlur = e => {
+  handleSNFieldBlur = e => {
     this.props.handleBlur(e);
     this.CourseList(this.props.values.student_number);
   };
@@ -92,7 +104,7 @@ class MyForm extends React.Component {
             placeholder="Enter your student number"
             value={values.student_number}
             onChange={handleChange}
-            onBlur={this.handleEmailFieldBlur}
+            onBlur={this.handleSNFieldBlur}
           />
           {errors.student_number && touched.student_number && (
             <div className="alert alert-danger">{errors.student_number}</div>
@@ -165,24 +177,50 @@ class MyForm extends React.Component {
           />
         </div>
 
-        <div className="custom-file">
-          <input
-            className="custom-file-input"
-            type="file"
-            value={values.upload_file}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          <label
-            className="custom-file-label"
-            id="upload_files"
-            htmlFor="upload_files"
+        <div className="form-group">
+          <label for="file">Please upload your supported documents!</label>
+          <br />
+          <Dropzone
+            style={dropzoneStyle}
+            accept="application/pdf"
+            onDrop={acceptedFiles => {
+              if (acceptedFiles.length === 0) {
+                return;
+              }
+              setFieldValue("files", values.files.concat(acceptedFiles));
+            }}
           >
-            Please upload your application
-          </label>
-          {errors.upload_file && touched.upload_file && (
-            <div className="alert alert-danger">{errors.upload_file}</div>
-          )}
+            {({
+              getRootProps,
+              getInputProps,
+              isDragActive,
+              isDragReject,
+              acceptedFiles,
+              rejectedFiles
+            }) => {
+              if (isDragActive) {
+                return "This file is authorized";
+              }
+
+              if (isDragReject) {
+                return "This file is not authorized";
+              }
+
+              if (values.files.length < 3) {
+                return (
+                  <section>
+                    <div className="upload_file" {...getRootProps()}>
+                      <input {...getInputProps()} />
+                      <p>Click to upload the file! (Up to three)</p>
+                    </div>
+                    <ListThumb files={values.files} />
+                  </section>
+                );
+              } else {
+                return <ListThumb files={values.files} />;
+              }
+            }}
+          </Dropzone>
         </div>
 
         <div className="custom-control custom-checkbox">
@@ -218,7 +256,6 @@ class MyForm extends React.Component {
         >
           Submit
         </button>
-        {JSON.stringify(this.state.courses)}
         <DisplayFormikState {...this.props} />
       </form>
     );

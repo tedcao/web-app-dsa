@@ -1,5 +1,6 @@
 import React from "react";
 import Select from "react-select";
+import Thumb from "../thumb";
 
 class FacultySelect extends React.Component {
   handleChange = value => {
@@ -63,15 +64,6 @@ class CourseSelect extends React.Component {
   }
 }
 
-const course_options = [
-  { value: "Food", label: "Food" },
-  { value: "Being Fabulous", label: "Being Fabulous" },
-  { value: "Ken Wheeler", label: "Ken Wheeler" },
-  { value: "ReasonML", label: "ReasonML" },
-  { value: "Unicorns", label: "Unicorns" },
-  { value: "Kittens", label: "Kittens" }
-];
-
 const faculty_options = [
   {
     value: "School of the Arts, Media, Performance & Design",
@@ -104,6 +96,12 @@ const faculty_options = [
   { value: "Faculty of Science", label: "Faculty of Science" }
 ];
 
+class ListThumb extends React.Component {
+  render() {
+    return this.props.files.map((file, i) => <Thumb key={i} file={file} />);
+  }
+}
+
 /*--------   debug method  ----------------*/
 const DisplayFormikState = props => (
   <div style={{ margin: "1rem 0" }}>
@@ -116,10 +114,32 @@ const DisplayFormikState = props => (
       }}
     >
       <strong>props</strong> = {JSON.stringify(props, null, 2)}
+      <br />
+      <strong>File</strong> =>{" "}
+      {JSON.stringify(
+        {
+          // fileName: props.values.file.name,
+          // type: props.values.file.type,
+          // size: `${props.values.file.size} bytes`,
+          // fileName2: props.values.file2.name,
+          // type2: props.values.file2.type,
+          // size2: `${props.values.file2.size} bytes`,
+          // fileName3: props.values.file3.name,
+          // type3: props.values.file3.type,
+          // size3: `${props.values.file3.size} bytes`
+          files: props.values.files.map(file => ({
+            fileName: file.name,
+            type: file.type,
+            size: `${file.size} bytes`
+          }))
+        },
+        null,
+        2
+      )}
     </pre>
   </div>
 );
 /*--------   end of debug method  ----------------*/
-export { FacultySelect, CourseSelect };
+export { FacultySelect, CourseSelect, ListThumb };
 
 export { DisplayFormikState };
