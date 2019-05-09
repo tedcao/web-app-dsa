@@ -20,25 +20,27 @@ const dropzoneStyle = {
   borderRadius: 5
 };
 
+const queryString = require("query-string");
+
 const formikEnhancer = withFormik({
-  validationSchema: Yup.object().shape({
-    //.match can be used for number in the future
-    student_number: Yup.string()
-      .min(9, "Please enter a valid student number")
-      .max(9, "Please enter a valid student number")
-      .required("Student number is required"),
-    name: Yup.string().required("Please entre your name"),
-    home_faculty: Yup.string().required("Please select your home faculty"),
-    //.match can be used for number in the future
-    phone: Yup.string()
-      .min(10, "Please enter a valid phone number")
-      .max(10, "Please enter a valid phone number")
-      .required("Please entre your phone number"),
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required!"),
-    course: Yup.string().required("Course is required!")
-  }),
+  // validationSchema: Yup.object().shape({
+  //   //.match can be used for number in the future
+  //   student_number: Yup.string()
+  //     .min(9, "Please enter a valid student number")
+  //     .max(9, "Please enter a valid student number")
+  //     .required("Student number is required"),
+  //   name: Yup.string().required("Please entre your name"),
+  //   home_faculty: Yup.string().required("Please select your home faculty"),
+  //   //.match can be used for number in the future
+  //   phone: Yup.string()
+  //     .min(10, "Please enter a valid phone number")
+  //     .max(10, "Please enter a valid phone number")
+  //     .required("Please entre your phone number"),
+  //   email: Yup.string()
+  //     .email("Invalid email address")
+  //     .required("Email is required!")
+  //   // course: Yup.string().required("Course is required!")
+  // }),
   mapPropsToValues: props => ({
     student_number: "",
     name: "",
@@ -55,10 +57,26 @@ const formikEnhancer = withFormik({
     const payload = {
       ...values
     };
-    setTimeout(() => {
-      alert(JSON.stringify(payload, null, 4));
-      setSubmitting(false);
-    }, 1000);
+    let formdata = new FormData();
+    formdata.append("student_id", payload.student_number);
+    formdata.append("name", payload.name); //not used
+    formdata.append("home_faculty", payload.home_faculty.value);
+    formdata.append("student_phone", payload.phone);
+    formdata.append("student_email", payload.email);
+    formdata.append("courseandsection", payload.course.value);
+    formdata.append("aggrement", payload.aggrement);
+    formdata.append("file", payload.files[0]);
+    formdata.append("file", payload.files[1]);
+    formdata.append("file", payload.files[2]);
+
+    axios({
+      enctype: "multipart/form-data",
+      url: "http://localhost:8080/api/insertTask",
+      method: "POST",
+      data: formdata
+    }).then(res => {
+      console.log(res);
+    });
   },
 
   displayName: "MyForm"
@@ -77,7 +95,6 @@ class MyForm extends React.Component {
     var url = `http://localhost:8080/api/enrollment_search/${student_number}`;
     const response = await axios.post(url);
     this.setState({ courses: response.data.data });
-    // console.log(this.state.courses);
   }
 
   render() {
@@ -178,9 +195,10 @@ class MyForm extends React.Component {
         </div>
 
         <div className="form-group">
-          <label for="file">Please upload your supported documents!</label>
+          <label htmlFor="file">Please upload your supported documents!</label>
           <br />
           <Dropzone
+            name="file1234"
             style={dropzoneStyle}
             accept="application/pdf"
             onDrop={acceptedFiles => {
@@ -210,7 +228,7 @@ class MyForm extends React.Component {
                 return (
                   <section>
                     <div className="upload_file" {...getRootProps()}>
-                      <input {...getInputProps()} />
+                      <input name="userFiles" {...getInputProps()} />
                       <p>Click to upload the file! (Up to three)</p>
                     </div>
                     <ListThumb files={values.files} />

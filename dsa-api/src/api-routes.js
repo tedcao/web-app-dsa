@@ -3,6 +3,7 @@ let router = require("express").Router();
 var courseController = require("./course-api/courseController");
 var enrollmentController = require("./enrollment-api/enrollmentController");
 var taskController = require("./task-api/taskController");
+
 // Set default API response
 router.get("/", function(req, res) {
   res.json({
@@ -37,6 +38,7 @@ router
 /* ------   End of Course router  -----------*/
 
 /* ------   Start of Task router  -----------*/
+// router.route("/taskList").post(multipartMiddleware, taskController.index); //list all the task
 router.route("/taskList").post(taskController.index); //list all the task
 router.route("/insertTask").post(taskController.insert); //insert new task
 router.route("/updateTask/:task_id").post(taskController.update); //update task based on task id

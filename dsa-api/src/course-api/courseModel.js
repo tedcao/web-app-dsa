@@ -10,10 +10,10 @@ var courseSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  term: {
-    type: String,
-    require: true
-  },
+  // term: {
+  //   type: String,
+  //   require: true
+  // },
   instructor: {
     type: String,
     require: true

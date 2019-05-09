@@ -14,10 +14,6 @@ var taskSchema = mongoose.Schema({
     type: String,
     require: true
   },
-  term: {
-    type: String,
-    require: true
-  },
   student_email: {
     type: String,
     require: true
@@ -37,12 +33,18 @@ var taskSchema = mongoose.Schema({
     type: String,
     require: true
   },
-  file: {
+  files: {
     type: String
   },
   approve: {
     type: Boolean,
-    required: true
+    required: true,
+    default: false
+  },
+  aggrement: {
+    type: Boolean,
+    required: true,
+    default: false
   },
   create_date: {
     type: Date,

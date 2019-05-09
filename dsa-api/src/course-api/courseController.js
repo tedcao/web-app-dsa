@@ -22,7 +22,7 @@ exports.insert = function(req, res) {
   var course = new Course();
   course.course = req.body.course ? req.body.course : course.course;
   course.section = req.body.section;
-  course.term = req.body.term;
+  // course.term = req.body.term;
   course.instructor = req.body.instructor;
   course.supervisor = req.body.supervisor;
 
@@ -43,7 +43,7 @@ exports.update = function(req, res) {
 
     course.course = req.body.course ? req.body.course : course.course;
     course.section = req.body.section;
-    course.term = req.body.term;
+    // course.term = req.body.term;
     course.student = req.body.student;
 
     // save the course and check for errors
