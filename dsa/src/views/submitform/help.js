@@ -2,6 +2,12 @@ import React from "react";
 import Select from "react-select";
 import Thumb from "../thumb";
 
+class ListThumb extends React.Component {
+  render() {
+    return this.props.files.map((file, i) => <Thumb key={i} file={file} />);
+  }
+}
+
 class FacultySelect extends React.Component {
   handleChange = value => {
     // this is going to call setFieldValue and manually update values.topcis
@@ -96,12 +102,6 @@ const faculty_options = [
   { value: "Faculty of Science", label: "Faculty of Science" }
 ];
 
-class ListThumb extends React.Component {
-  render() {
-    return this.props.files.map((file, i) => <Thumb key={i} file={file} />);
-  }
-}
-
 /*--------   debug method  ----------------*/
 const DisplayFormikState = props => (
   <div style={{ margin: "1rem 0" }}>
@@ -141,5 +141,4 @@ const DisplayFormikState = props => (
 );
 /*--------   end of debug method  ----------------*/
 export { FacultySelect, CourseSelect, ListThumb };
-
 export { DisplayFormikState };

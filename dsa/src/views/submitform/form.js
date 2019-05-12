@@ -49,9 +49,10 @@ const formikEnhancer = withFormik({
     email: "",
     course: "",
     aggrement: "",
-    // file: "",
-    // file2: "",
-    files: []
+    files: [],
+    file1_des: "",
+    file2_des: "",
+    file3_des: ""
   }),
   handleSubmit: (values, { setSubmitting }) => {
     const payload = {
@@ -65,6 +66,9 @@ const formikEnhancer = withFormik({
     formdata.append("student_email", payload.email);
     formdata.append("courseandsection", payload.course.value);
     formdata.append("aggrement", payload.aggrement);
+    formdata.append("file1_des", payload.file1_des);
+    formdata.append("file2_des", payload.file2_des);
+    formdata.append("file3_des", payload.file3_des);
     formdata.append("file", payload.files[0]);
     formdata.append("file", payload.files[1]);
     formdata.append("file", payload.files[2]);
@@ -239,6 +243,35 @@ class MyForm extends React.Component {
               }
             }}
           </Dropzone>
+        </div>
+        <div className="form-group">
+          <span htmlFor="file1_des">First file Description</span>
+          <input
+            className="form-control"
+            id="file1_des"
+            placeholder="Please entre description"
+            value={values.file1_des}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <span htmlFor="file2_des">Second file Description</span>
+          <input
+            className="form-control"
+            id="file2_des"
+            placeholder="Please entre description"
+            value={values.file2_des}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <span htmlFor="file3_des">Third file Description</span>
+          <input
+            className="form-control"
+            id="file3_des"
+            placeholder="Please entre description"
+            value={values.file3_des}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
         </div>
 
         <div className="custom-control custom-checkbox">

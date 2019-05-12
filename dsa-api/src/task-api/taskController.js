@@ -46,6 +46,9 @@ exports.insert = function(req, res) {
     let supervisor = await tools.getSupervisor(course, section, res); // retrive supervisor email from course table
     var aggrement = req.body.aggrement;
     var files = JSON.stringify(req.files);
+    var file1_des = req.body.file1_des;
+    var file2_des = req.body.file2_des;
+    var file3_des = req.body.file3_des;
 
     var task = new Task();
     task.student_id = student_id;
@@ -58,6 +61,10 @@ exports.insert = function(req, res) {
     task.supervisor = supervisor;
     task.files = files;
     task.aggrement = aggrement;
+    task.file1_des = file1_des;
+    task.file2_des = file2_des;
+    task.file3_des = file3_des;
+
     // save the enrollment and check for errors
     task.save(function(err) {
       if (err) res.json(err);

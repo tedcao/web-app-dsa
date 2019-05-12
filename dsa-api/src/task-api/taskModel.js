@@ -36,6 +36,15 @@ var taskSchema = mongoose.Schema({
   files: {
     type: String
   },
+  file1_des: {
+    type: String
+  },
+  file2_des: {
+    type: String
+  },
+  file3_des: {
+    type: String
+  },
   approve: {
     type: Boolean,
     required: true,
