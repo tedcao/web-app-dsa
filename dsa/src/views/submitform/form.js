@@ -20,27 +20,27 @@ const dropzoneStyle = {
   borderRadius: 5
 };
 
-const queryString = require("query-string");
+// const queryString = require("query-string");
 
 const formikEnhancer = withFormik({
-  // validationSchema: Yup.object().shape({
-  //   //.match can be used for number in the future
-  //   student_number: Yup.string()
-  //     .min(9, "Please enter a valid student number")
-  //     .max(9, "Please enter a valid student number")
-  //     .required("Student number is required"),
-  //   name: Yup.string().required("Please entre your name"),
-  //   home_faculty: Yup.string().required("Please select your home faculty"),
-  //   //.match can be used for number in the future
-  //   phone: Yup.string()
-  //     .min(10, "Please enter a valid phone number")
-  //     .max(10, "Please enter a valid phone number")
-  //     .required("Please entre your phone number"),
-  //   email: Yup.string()
-  //     .email("Invalid email address")
-  //     .required("Email is required!")
-  //   // course: Yup.string().required("Course is required!")
-  // }),
+  validationSchema: Yup.object().shape({
+    //.match can be used for number in the future
+    student_number: Yup.string()
+      .min(9, "Please enter a valid student number")
+      .max(9, "Please enter a valid student number")
+      .required("Student number is required"),
+    name: Yup.string().required("Please entre your name"),
+    home_faculty: Yup.string().required("Please select your home faculty"),
+    //.match can be used for number in the future
+    phone: Yup.string()
+      .min(10, "Please enter a valid phone number")
+      .max(10, "Please enter a valid phone number")
+      .required("Please entre your phone number"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required!")
+    // course: Yup.string().required("Course is required!")
+  }),
   mapPropsToValues: props => ({
     student_number: "",
     name: "",

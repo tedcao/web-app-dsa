@@ -61,4 +61,4 @@ typings/
 .next
 
 #upload files
-dsa-api/src/uploads
+./dsa-api/src/uploads

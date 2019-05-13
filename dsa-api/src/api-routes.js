@@ -43,7 +43,7 @@ router.route("/taskList").post(taskController.index); //list all the task
 router.route("/insertTask").post(taskController.insert); //insert new task
 router.route("/updateTask/:task_id").post(taskController.update); //update task based on task id
 router.route("/deleteTask/:task_id").post(taskController.delete); //delete task based on task id
-router.route("/task_search/:instructor_name").post(taskController.search); //search for tasks based on instructor name
+router.route("/task_search/:instructor_email").post(taskController.search); //search for tasks based on instructor name
 
 /* ------   End of Task router  -----------*/
 

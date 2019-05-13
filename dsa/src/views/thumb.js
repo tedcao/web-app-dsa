@@ -24,8 +24,8 @@ export default class Thumb extends React.Component {
 
   render() {
     const { file } = this.props;
-    const { loading, thumb } = this.state;
-
+    // const { loading, thumb } = this.state;
+    const { loading } = this.state;
     if (!file) {
       return null;
     }

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import SubmitForm from "./views/submitform/form";
+import MyEnhancedForm from "./views/submitform/form";
 import Listing from "./views/listing/listing";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
@@ -10,10 +10,10 @@ import "bootstrap/dist/css/bootstrap.css";
 const routes = [
   {
     path: "/submitform",
-    component: SubmitForm
+    component: MyEnhancedForm
   },
   {
-    path: "/formlist",
+    path: "/formlist/:email",
     component: Listing
   }
 ];
@@ -43,24 +43,42 @@ function RouteConfigExample() {
             </h1>
           </div>
         </div>
-        <div className="row">
-          <div className="col-3">
-            <nav className="navbar navbar-light bg-light">
-              <Link className="navbar-brand mb-0 h1" to="/submitform">
-                Student Submit From
-              </Link>
-            </nav>
-            <nav className="navbar navbar-light bg-light">
-              <Link className="navbar-brand mb-0 h1" to="/formlist">
-                List of the submissions
-              </Link>
-            </nav>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon" />
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">
+                  <Link className="navbar-brand mb-0 h1" to="/submitform">
+                    Student Submit From
+                  </Link>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <Link className="navbar-brand mb-0 h1" to="/formlist">
+                    List of the submissions
+                  </Link>
+                </a>
+              </li>
+            </ul>
           </div>
-          <div className="col-9">
-            {routes.map((route, i) => (
-              <RouteWithSubRoutes key={i} {...route} />
-            ))}
-          </div>
+        </nav>
+
+        <div className="Container">
+          {routes.map((route, i) => (
+            <RouteWithSubRoutes key={i} {...route} />
+          ))}
         </div>
       </div>
     </Router>

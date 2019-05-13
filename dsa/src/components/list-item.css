@@ -1,0 +1,12 @@
+.row.item {
+  margin: 13px 10px;
+  border: 1px solid;
+  box-shadow: 1px 1px 1px #888888;
+}
+
+button.btn.btn-primary.item_button {
+  width: 100%;
+  padding: 10%;
+  font-size: 20px;
+  margin-top: 10%;
+}

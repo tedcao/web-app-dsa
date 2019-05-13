@@ -141,7 +141,7 @@ exports.delete = function(req, res) {
 
 // return search based on the sinstructor email
 exports.search = function(req, res) {
-  Task.find({ instructor: req.params.instructor_name }, function(err, task) {
+  Task.find({ instructor: req.params.instructor_email }, function(err, task) {
     if (err) res.send(err);
     return res.json({
       message: "Student course details loading..",
