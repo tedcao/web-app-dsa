@@ -4,9 +4,40 @@
   box-shadow: 1px 1px 1px #888888;
 }
 
+/* approve button */
 button.btn.btn-primary.item_button {
   width: 100%;
   padding: 10%;
   font-size: 20px;
   margin-top: 10%;
+}
+/* deny button */
+button.btn.btn-secondary.item_button {
+  width: 100%;
+  padding: 10%;
+  font-size: 20px;
+  margin-top: 10%;
+}
+
+/* approved button */
+button.btn.btn-success.active.item_button {
+  width: 100%;
+  padding: 10%;
+  font-size: 20px;
+  margin-top: 10%;
+}
+/* denied button */
+button.btn.btn-danger.active.item_button {
+  width: 100%;
+  padding: 10%;
+  font-size: 20px;
+  margin-top: 10%;
+}
+
+.name {
+  font-weight: 700;
+}
+
+.col-4.description {
+  color: grey;
 }

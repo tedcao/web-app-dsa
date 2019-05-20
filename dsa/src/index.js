@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MyEnhancedForm from "./views/submitform/form";
-import Listing from "./views/listing/listing";
+import InsturctorListing from "./views/listing/insturctorlisting";
+import SupervisorListing from "./views/listing/supervisorlisting";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -13,8 +14,12 @@ const routes = [
     component: MyEnhancedForm
   },
   {
-    path: "/formlist/:email",
-    component: Listing
+    path: "/instructor/:insturctor_email&:encryptcode",
+    component: InsturctorListing
+  },
+  {
+    path: "/supervisor/:supervisor_email&:encryptcode",
+    component: SupervisorListing
   }
 ];
 
@@ -43,9 +48,9 @@ function RouteConfigExample() {
             </h1>
           </div>
         </div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-toggle="collapse"
             data-target="#navbarNav"
@@ -53,23 +58,14 @@ function RouteConfigExample() {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon" />
+            <span className="navbar-toggler-icon" />
           </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">
-                  <Link className="navbar-brand mb-0 h1" to="/submitform">
-                    Student Submit From
-                  </Link>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <Link className="navbar-brand mb-0 h1" to="/formlist">
-                    List of the submissions
-                  </Link>
-                </a>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav">
+              <li className="nav-item active">
+                <Link className="navbar-brand mb-0 h1" to="/submitform">
+                  Student Submit From
+                </Link>
               </li>
             </ul>
           </div>

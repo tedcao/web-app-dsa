@@ -58,7 +58,7 @@ const formikEnhancer = withFormik({
     const payload = {
       ...values
     };
-    let formdata = new FormData();
+    let formdata = new FormData(); //initialize formdata and append the information to form-data
     formdata.append("student_id", payload.student_number);
     formdata.append("name", payload.name); //not used
     formdata.append("home_faculty", payload.home_faculty.value);
@@ -74,6 +74,7 @@ const formikEnhancer = withFormik({
     formdata.append("file", payload.files[2]);
 
     axios({
+      //send the form-data to inserttask using post method
       enctype: "multipart/form-data",
       url: "http://localhost:8080/api/insertTask",
       method: "POST",
@@ -90,6 +91,7 @@ class MyForm extends React.Component {
   state = { courses: [] };
 
   handleSNFieldBlur = e => {
+    //function called when student number section lose focus
     this.props.handleBlur(e);
     this.CourseList(this.props.values.student_number);
   };
@@ -105,49 +107,58 @@ class MyForm extends React.Component {
     const {
       values,
       touched,
-      dirty,
       errors,
       handleChange,
       handleBlur,
       handleSubmit,
-      handleReset,
       setFieldValue,
       setFieldTouched,
       isSubmitting
     } = this.props;
     return (
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="student_number">Student Number</label>
+        <div className="form-group row">
+          <label htmlFor="student_number" className="col-2 col-form-label">
+            Student Number
+          </label>
           <input
-            className="form-control"
+            className="form-control col-10"
             id="student_number"
             placeholder="Enter your student number"
             value={values.student_number}
             onChange={handleChange}
             onBlur={this.handleSNFieldBlur}
           />
+          <div className="col-2" />
           {errors.student_number && touched.student_number && (
-            <div className="alert alert-danger">{errors.student_number}</div>
+            <div className="alert alert-danger col-10">
+              {errors.student_number}
+            </div>
           )}
         </div>
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
+        <div className="form-group row">
+          <label htmlFor="name" className="col-2 col-form-label">
+            Name
+          </label>
           <input
-            className="form-control"
+            className="form-control col-10"
             id="name"
             placeholder="Please entre your legal name"
             value={values.name}
             onChange={handleChange}
             onBlur={handleBlur}
           />
+          <div className="col-2" />
           {errors.name && touched.name && (
-            <div className="alert alert-danger">{errors.name}</div>
+            <div className="alert alert-danger col-10">{errors.name}</div>
           )}
         </div>
-        <div className="form-group">
+        <div className="form-group row">
+          <label htmlFor="color" className="col-2">
+            Home Faculty
+          </label>
           <FacultySelect
-            className="form-control"
+            className="form-control col-10"
             value={values.home_faculty}
             onChange={setFieldValue}
             onBlur={setFieldTouched}
@@ -155,26 +166,29 @@ class MyForm extends React.Component {
             touched={touched.home_faculty}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="phone">Phone</label>
+        <div className="form-group row">
+          <label htmlFor="phone" className="col-2">
+            Phone
+          </label>
           <input
-            className="form-control"
+            className="form-control col-10"
             id="phone"
             placeholder="Please entre your phone number"
             value={values.phone}
             onChange={handleChange}
             onBlur={handleBlur}
           />
+          <div className="col-2" />
           {errors.phone && touched.phone && (
-            <div className="alert alert-danger">{errors.phone}</div>
+            <div className="alert alert-danger col-10">{errors.phone}</div>
           )}
         </div>
-        <div className="form-group">
-          <label id="email_label" htmlFor="email">
+        <div className="form-group row">
+          <label htmlFor="email" className="col-2">
             Email
           </label>
           <input
-            className="form-control"
+            className="form-control col-10"
             id="email"
             placeholder="Enter your email"
             type="email"
@@ -182,13 +196,16 @@ class MyForm extends React.Component {
             onChange={handleChange}
             onBlur={handleBlur}
           />
+          <div className="col-2" />
           {errors.email && touched.email && (
-            <div className="alert alert-danger">{errors.email}</div>
+            <div className="alert alert-danger col-10">{errors.email}</div>
           )}
         </div>
-        <div className="form-group">
+        <div className="form-group row">
+          <label htmlFor="course_section" className="col-2">
+            Select your Course and Section
+          </label>
           <CourseSelect
-            className="form-control"
             value={values.course}
             onChange={setFieldValue}
             onBlur={setFieldTouched}
@@ -197,86 +214,84 @@ class MyForm extends React.Component {
             courses={this.state.courses}
           />
         </div>
-
-        <div className="form-group">
-          <label htmlFor="file">Please upload your supported documents!</label>
-          <br />
-          <Dropzone
-            name="file1234"
-            style={dropzoneStyle}
-            accept="application/pdf"
-            onDrop={acceptedFiles => {
-              if (acceptedFiles.length === 0) {
-                return;
-              }
-              setFieldValue("files", values.files.concat(acceptedFiles));
-            }}
-          >
-            {({
-              getRootProps,
-              getInputProps,
-              isDragActive,
-              isDragReject,
-              acceptedFiles,
-              rejectedFiles
-            }) => {
-              if (isDragActive) {
-                return "This file is authorized";
-              }
-
-              if (isDragReject) {
-                return "This file is not authorized";
-              }
-
-              if (values.files.length < 3) {
-                return (
-                  <section>
-                    <div className="upload_file" {...getRootProps()}>
-                      <input name="userFiles" {...getInputProps()} />
-                      <p>Click to upload the file! (Up to three)</p>
-                    </div>
-                    <ListThumb files={values.files} />
-                  </section>
-                );
-              } else {
-                return <ListThumb files={values.files} />;
-              }
-            }}
-          </Dropzone>
+        <div className="row">
+          <div className="form-group col-6">
+            <label htmlFor="file">
+              Please upload your supported documents!
+            </label>
+            <br />
+            <Dropzone
+              name="file1234"
+              style={dropzoneStyle}
+              accept="application/pdf"
+              onDrop={acceptedFiles => {
+                if (acceptedFiles.length === 0) {
+                  return;
+                }
+                setFieldValue("files", values.files.concat(acceptedFiles));
+              }}
+            >
+              {({
+                getRootProps,
+                getInputProps,
+                isDragActive,
+                isDragReject
+              }) => {
+                if (isDragActive) {
+                  return "This file is authorized";
+                }
+                if (isDragReject) {
+                  return "This file is not authorized";
+                }
+                if (values.files.length < 3) {
+                  return (
+                    <section>
+                      <div className="upload_file" {...getRootProps()}>
+                        <input name="userFiles" {...getInputProps()} />
+                        <p>Click to upload the file! (Up to three)</p>
+                        <ListThumb files={values.files} />
+                      </div>
+                    </section>
+                  );
+                } else {
+                  return <ListThumb files={values.files} />;
+                }
+              }}
+            </Dropzone>
+          </div>
+          <div className="form-group col-6">
+            <span htmlFor="file1_des">First file Description</span>
+            <input
+              className="form-control"
+              id="file1_des"
+              placeholder="Please entre description"
+              value={values.file1_des}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            <span htmlFor="file2_des">Second file Description</span>
+            <input
+              className="form-control"
+              id="file2_des"
+              placeholder="Please entre description"
+              value={values.file2_des}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            <span htmlFor="file3_des">Third file Description</span>
+            <input
+              className="form-control"
+              id="file3_des"
+              placeholder="Please entre description"
+              value={values.file3_des}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </div>
         </div>
-        <div className="form-group">
-          <span htmlFor="file1_des">First file Description</span>
+        <div className="custom-control custom-checkbox row">
           <input
-            className="form-control"
-            id="file1_des"
-            placeholder="Please entre description"
-            value={values.file1_des}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          <span htmlFor="file2_des">Second file Description</span>
-          <input
-            className="form-control"
-            id="file2_des"
-            placeholder="Please entre description"
-            value={values.file2_des}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          <span htmlFor="file3_des">Third file Description</span>
-          <input
-            className="form-control"
-            id="file3_des"
-            placeholder="Please entre description"
-            value={values.file3_des}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        </div>
-
-        <div className="custom-control custom-checkbox">
-          <input
-            className="custom-control-input"
+            className="custom-control-input col-12"
             id="aggrement"
             type="checkbox"
             value={values.aggrement}
@@ -291,28 +306,23 @@ class MyForm extends React.Component {
             Check if you registered with Counselling/Disability services
           </label>
         </div>
+        <div className="row">
+          <div className="col-9" />
+          <button
+            className="btn btn-primary btn-lg col-3"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            Submit
+          </button>
+        </div>
 
-        <button
-          type="button"
-          className="outline btn btn-secondary btn-lg col-4"
-          onClick={handleReset}
-          disabled={!dirty || isSubmitting}
-        >
-          Reset
-        </button>
-        <button
-          className="btn btn-primary btn-lg col-4"
-          type="submit"
-          disabled={isSubmitting}
-        >
-          Submit
-        </button>
         <DisplayFormikState {...this.props} />
       </form>
     );
   }
 }
 
-const MyEnhancedForm = formikEnhancer(MyForm);
+const MyEnhancedForm = formikEnhancer(MyForm); //reform the form using formik
 
 export default MyEnhancedForm;

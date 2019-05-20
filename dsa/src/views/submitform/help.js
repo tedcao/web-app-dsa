@@ -21,9 +21,9 @@ class FacultySelect extends React.Component {
 
   render() {
     return (
-      <div style={{ margin: "1rem 0" }}>
-        <label htmlFor="color">Home Faculty</label>
+      <div className="col-10 select">
         <Select
+          class
           id="color"
           options={faculty_options}
           multi={false}
@@ -52,8 +52,7 @@ class CourseSelect extends React.Component {
 
   render() {
     return (
-      <div style={{ margin: "1rem 0" }}>
-        <label htmlFor="course_section">Select your Course and Section</label>
+      <div className="col-10 select">
         <Select
           id="course_section"
           options={this.props.courses}

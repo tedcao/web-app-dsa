@@ -3,6 +3,7 @@ let router = require("express").Router();
 var courseController = require("./course-api/courseController");
 var enrollmentController = require("./enrollment-api/enrollmentController");
 var taskController = require("./task-api/taskController");
+var fileController = require("./file-api/fileController");
 
 // Set default API response
 router.get("/", function(req, res) {
@@ -39,13 +40,22 @@ router
 
 /* ------   Start of Task router  -----------*/
 // router.route("/taskList").post(multipartMiddleware, taskController.index); //list all the task
-router.route("/taskList").post(taskController.index); //list all the task
+router
+  .route("/supervisor/:supervisor_email&:encryptcode")
+  .post(taskController.index); //list all the task
 router.route("/insertTask").post(taskController.insert); //insert new task
 router.route("/updateTask/:task_id").post(taskController.update); //update task based on task id
 router.route("/deleteTask/:task_id").post(taskController.delete); //delete task based on task id
-router.route("/task_search/:instructor_email").post(taskController.search); //search for tasks based on instructor name
+router
+  .route("/instructor/:instructor_email&:encryptcode")
+  .post(taskController.search); //search for tasks based on instructor name
+
+router.route("/approve/:task_id").post(taskController.approve); //approve the task with corresponding task_id
+router.route("/deny/:task_id").post(taskController.deny); //deny the task with corresponding task_id
 
 /* ------   End of Task router  -----------*/
+
+router.route("/file/:file_name").get(fileController.get); //file download link
 
 // Export API routes
 module.exports = router;

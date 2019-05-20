@@ -18,6 +18,9 @@ var taskSchema = mongoose.Schema({
     type: String,
     require: true
   },
+  name: {
+    type: String
+  },
   student_phone: {
     type: Number
   },
@@ -37,17 +40,25 @@ var taskSchema = mongoose.Schema({
     type: String
   },
   file1_des: {
-    type: String
+    type: String,
+    default: null
   },
   file2_des: {
-    type: String
+    type: String,
+    default: null
   },
   file3_des: {
-    type: String
+    type: String,
+    default: null
   },
   approve: {
     type: Boolean,
     required: true,
+    default: false
+  },
+  modified: {
+    type: Boolean,
+    require: true,
     default: false
   },
   aggrement: {
