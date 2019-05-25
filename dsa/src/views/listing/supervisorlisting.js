@@ -31,7 +31,9 @@ class SupervisorListing extends React.Component {
 
 function List(props) {
   const items = props.items;
-  const listItems = items.map(item => <ListItem key={item._id} item={item} />);
+  const listItems = items.map(item => (
+    <ListItem key={item._id} item={item} admin={true} />
+  ));
   return <div className="container">{listItems}</div>;
 }
 

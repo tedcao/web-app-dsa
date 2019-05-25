@@ -34,6 +34,13 @@ button.btn.btn-danger.active.item_button {
   margin-top: 10%;
 }
 
+button.btn.btn-outline-warning.item_button {
+  width: 100%;
+  padding: 10%;
+  font-size: 20px;
+  margin-top: 10%;
+}
+
 .name {
   font-weight: 700;
 }

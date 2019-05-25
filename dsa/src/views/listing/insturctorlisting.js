@@ -19,10 +19,46 @@ class InsturctorListing extends React.Component {
       this.props.match.params.encryptcode
     );
   }
+  sortModified(e) {
+    console.log("Approved");
+    // 0 unchange, -1 x<, y , 1:  y < X
+    const newItems = this.state.items;
+    newItems.sort(function(x, y) {
+      if (x.modified === y.modified) {
+        if (x.approve === y.approve) {
+          return 0;
+        } else if (x.approve !== y.approve && x.approve === false) {
+          return 1;
+        } else {
+          return -1;
+        }
+      } else if (x.modified !== y.modified && x.modified === true) {
+        return 1;
+      } else {
+        return -1;
+      }
+      // return x.modified === y.modified ? 0 : x ? -1 : 1;
+    });
+    this.setState({ items: newItems });
+  }
 
   render() {
     return (
       <div className="container">
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            value=""
+            id="defaultCheck1"
+            onChange={e => {
+              this.sortModified(e);
+            }}
+          />
+          <label className="form-check-label" htmlFor="defaultCheck1">
+            Approve
+          </label>
+        </div>
         <List items={this.state.items} />,
       </div>
     );

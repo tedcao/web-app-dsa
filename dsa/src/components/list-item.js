@@ -5,6 +5,11 @@ import "./list-item.css";
 var fileRequestPrefix = "http://localhost:8080/api/file/";
 
 class ListItem extends React.Component {
+  state = {
+    item: this.props.item,
+    item_id: this.props.item._id,
+    admin: this.props.admin
+  };
   render() {
     return (
       <div className="row item" key={this.key}>
@@ -12,57 +17,58 @@ class ListItem extends React.Component {
           <div className="row">
             <div className="col-3 name">Student ID : </div>
             <div className="col-3">
-              <span>{this.props.item.student_id}</span>
+              <span>{this.state.item.student_id}</span>
             </div>
           </div>
           <div className="row">
             <div className="col-3 name">Student Name : </div>
             <div className="col-3">
-              <span>{this.props.item.name}</span>
+              <span>{this.state.item.name}</span>
             </div>
           </div>
           <div className="row">
             <div className="col-3 name">Course :</div>
             <div className="col-3">
-              <span>{this.props.item.course}</span>
+              <span>{this.state.item.course}</span>
             </div>
           </div>
           <div className="row">
             <div className="col-3 name">Section : </div>
             <div className="col-3">
-              <span>{this.props.item.section}</span>
+              <span>{this.state.item.section}</span>
             </div>
           </div>
           <div className="row">
             <div className="col-3 name">Home Faculty : </div>
             <div className="col-6">
-              <span>{this.props.item.home_faculty}</span>
+              <span>{this.state.item.home_faculty}</span>
             </div>
           </div>
           <div className="row">
             <div className="col-3 name">Instructor Email : </div>
             <div className="col-3">
-              <span>{this.props.item.instructor}</span>
+              <span>{this.state.item.instructor}</span>
             </div>
           </div>
           <div className="row">
             <div className="col-3 name">Supervisor Email : </div>
             <div className="col-3">
-              <span>{this.props.item.supervisor}</span>
+              <span>{this.state.item.supervisor}</span>
             </div>
           </div>
           <div className="row">
             <div className="col-3 name">Submitted Date : </div>
             <div className="col-6">
-              <span>{this.props.item.create_date}</span>
+              <span>{this.state.item.create_date}</span>
             </div>
           </div>
-          {fileList(this.props.item)}
+          {fileList(this.state.item)}
         </div>
         <ApproveButton
-          modified={this.props.item.modified}
-          approve={this.props.item.approve}
-          id={this.props.item._id}
+          modified={this.state.item.modified}
+          approve={this.state.item.approve}
+          id={this.state.item._id}
+          admin={this.state.admin}
         />
       </div>
     );
@@ -70,83 +76,166 @@ class ListItem extends React.Component {
 }
 
 class ApproveButton extends React.Component {
+  state = {
+    modified: this.props.modified,
+    approve: this.props.approve,
+    id: this.props.id,
+    admin: this.props.admin
+  };
+
   async handleApproveRequest(e) {
     var approveRequest = "http://localhost:8080/api/approve/" + this.props.id;
     e.preventDefault();
     const response = await axios.post(approveRequest);
     if (response.data.data === true) {
-      window.location.reload();
+      this.setState({ modified: true });
     } else {
       console.log("Bad connection");
     }
-
-    // console.log(this.props.id);
   }
   async handleDenyRequest(e) {
     var denyRequest = "http://localhost:8080/api/deny/" + this.props.id;
     e.preventDefault();
     const response = await axios.post(denyRequest);
     if (response.data.data === true) {
-      window.location.reload();
+      this.setState({ modified: true });
     } else {
       console.log("Bad connection");
     }
+  }
 
-    // console.log(this.props.id);
-    // window.location.reload();
+  async handleOverwrite(e) {
+    var overwriteRequest =
+      "http://localhost:8080/api/overwrite/" + this.props.id;
+    e.preventDefault();
+    const response = await axios.post(overwriteRequest);
+    if (response.data.data === true) {
+      this.setState({ modified: false });
+    } else {
+      console.log("Bad connection");
+    }
   }
 
   render() {
-    // get modified and approve value
-    var modified = this.props.modified;
-    var approve = this.props.approve;
-    if (!modified) {
-      return (
-        <div className="col-2">
-          <button
-            type="button"
-            className="btn btn-primary item_button"
-            onClick={e => {
-              this.handleApproveRequest(e);
-            }}
-          >
-            Approve
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary item_button"
-            onClick={e => {
-              this.handleDenyRequest(e);
-            }}
-          >
-            Denied
-          </button>
-        </div>
-      );
-    } else if (modified && approve) {
-      return (
-        <div className="col-2">
-          <button
-            type="button"
-            className="btn btn-success active item_button"
-            disabled
-          >
-            Request Approved
-          </button>
-        </div>
-      );
+    var modified = this.state.modified;
+    var approve = this.state.approve;
+    var admin = this.state.admin;
+    if (admin) {
+      if (!modified) {
+        return (
+          <div className="col-2">
+            <button
+              type="button"
+              className="btn btn-primary item_button"
+              onClick={e => {
+                this.handleApproveRequest(e);
+              }}
+            >
+              Approve
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary item_button"
+              onClick={e => {
+                this.handleDenyRequest(e);
+              }}
+            >
+              Denied
+            </button>
+          </div>
+        );
+      } else if (modified && approve) {
+        return (
+          <div className="col-2">
+            <button
+              type="button"
+              className="btn btn-success active item_button"
+              disabled
+            >
+              Request Approved
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-warning item_button"
+              onClick={e => {
+                this.handleOverwrite(e);
+              }}
+            >
+              Overwrite
+            </button>
+          </div>
+        );
+      } else {
+        return (
+          <div className="col-2">
+            <button
+              type="button"
+              className="btn btn-danger active item_button"
+              disabled
+            >
+              Request Denied
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-warning item_button"
+              onClick={e => {
+                this.handleOverwrite(e);
+              }}
+            >
+              Overwrite
+            </button>
+          </div>
+        );
+      }
     } else {
-      return (
-        <div className="col-2">
-          <button
-            type="button"
-            className="btn btn-danger active item_button"
-            disabled
-          >
-            Request Denied
-          </button>
-        </div>
-      );
+      if (!modified) {
+        return (
+          <div className="col-2">
+            <button
+              type="button"
+              className="btn btn-primary item_button"
+              onClick={e => {
+                this.handleApproveRequest(e);
+              }}
+            >
+              Approve
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary item_button"
+              onClick={e => {
+                this.handleDenyRequest(e);
+              }}
+            >
+              Denied
+            </button>
+          </div>
+        );
+      } else if (modified && approve) {
+        return (
+          <div className="col-2">
+            <button
+              type="button"
+              className="btn btn-success active item_button"
+              disabled
+            >
+              Request Approved
+            </button>
+          </div>
+        );
+      } else {
+        return (
+          <div className="col-2">
+            <button
+              type="button"
+              className="btn btn-danger active item_button"
+              disabled
+            >
+              Request Denied
+            </button>
+          </div>
+        );
+      }
     }
   }
 }

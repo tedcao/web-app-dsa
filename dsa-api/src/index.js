@@ -19,7 +19,7 @@ app.use(
 app.use(bodyParser.json());
 
 // Connect to Mongoose and set connection variable
-mongoose.connect("mongodb://localhost/dsa");
+mongoose.connect("mongodb://localhost/dsa", { useNewUrlParser: true });
 
 var db = mongoose.connection;
 // Setup server port
