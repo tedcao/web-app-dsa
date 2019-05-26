@@ -188,7 +188,7 @@ exports.deny = function(req, res) {
   });
 };
 
-exports.overwrite = function(req,res) {
+exports.overwrite = function(req, res) {
   Task.findById(req.params.task_id, function(err, task) {
     if (err) res.send(err);
     task.modified = false;

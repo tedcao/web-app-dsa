@@ -1,4 +1,5 @@
 Course = require("../course-api/courseModel");
+//hash passward and information
 var crypto = require("crypto"),
   algorithm = "aes-256-ctr",
   password = "d6F3Efeq";

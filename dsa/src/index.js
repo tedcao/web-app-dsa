@@ -71,7 +71,7 @@ function RouteConfigExample() {
           </div>
         </nav>
 
-        <div className="Container">
+        <div className="container">
           {routes.map((route, i) => (
             <RouteWithSubRoutes key={i} {...route} />
           ))}

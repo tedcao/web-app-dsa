@@ -4,12 +4,16 @@ import { ListItem } from "../../components/list-item";
 import axios from "axios";
 
 class InsturctorListing extends React.Component {
-  state = { items: [] };
+  state = { items: [], search: "" };
   async Taskinfo(insturctor_email, encryptcode) {
     //use the instructor email to get the corresponding task information
     var url = `http://localhost:8080/api/instructor/${insturctor_email}&${encryptcode}`;
     const response = await axios.post(url);
     this.setState({ items: response.data.data });
+  }
+
+  updateSearch(event) {
+    this.setState({ search: event.target.value.substr(0, 20) });
   }
 
   componentDidMount() {
@@ -37,38 +41,51 @@ class InsturctorListing extends React.Component {
       } else {
         return -1;
       }
-      // return x.modified === y.modified ? 0 : x ? -1 : 1;
     });
     this.setState({ items: newItems });
   }
 
   render() {
+    let filtedItem = this.state.items.filter(item => {
+      if (
+        item.course.indexOf(this.state.search) !== -1 ||
+        item.student_id.indexOf(this.state.search) !== -1
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
     return (
-      <div className="container">
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            value=""
-            id="defaultCheck1"
-            onChange={e => {
+      <div className="">
+        <div className="row">
+          <button
+            className="btn btn-outline-primary col-3"
+            id="sortbutton"
+            onClick={e => {
               this.sortModified(e);
             }}
-          />
-          <label className="form-check-label" htmlFor="defaultCheck1">
-            Approve
-          </label>
+          >
+            Click to Sort the List
+          </button>
         </div>
-        <List items={this.state.items} />,
+        <div className="row">
+          <label className="search-title col-5" htmlFor="course_search">
+            Please enter the course-name/student-number you want to filter out :
+          </label>
+          <input
+            className="form-control col-7"
+            type="text"
+            id="course_search"
+            value={this.state.search}
+            onChange={this.updateSearch.bind(this)}
+          />
+        </div>
+        {filtedItem.map(item => {
+          return <ListItem key={item._id} item={item} />;
+        })}
       </div>
     );
   }
 }
-
-function List(props) {
-  const items = props.items;
-  const listItems = items.map(item => <ListItem key={item._id} item={item} />);
-  return <div className="container">{listItems}</div>;
-}
-
 export default InsturctorListing;

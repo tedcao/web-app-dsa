@@ -4,12 +4,16 @@ import { ListItem } from "../../components/list-item";
 import axios from "axios";
 
 class SupervisorListing extends React.Component {
-  state = { items: [] };
+  state = { items: [], search: "" };
   async Taskinfo(supervisor_email, encryptcode) {
     //use the instructor email to get the corresponding task information
     var url = `http://localhost:8080/api/supervisor/${supervisor_email}&${encryptcode}`;
     const response = await axios.post(url);
     this.setState({ items: response.data.data });
+  }
+
+  updateSearch(event) {
+    this.setState({ search: event.target.value.substr(0, 20) });
   }
 
   componentDidMount() {
@@ -20,21 +24,76 @@ class SupervisorListing extends React.Component {
     );
   }
 
+  sortModified(e) {
+    console.log("Approved");
+    // 0 unchange, -1 x<, y , 1:  y < X
+    const newItems = this.state.items;
+    newItems.sort(function(x, y) {
+      if (x.modified === y.modified) {
+        if (x.approve === y.approve) {
+          return 0;
+        } else if (x.approve !== y.approve && x.approve === false) {
+          return 1;
+        } else {
+          return -1;
+        }
+      } else if (x.modified !== y.modified && x.modified === true) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+    this.setState({ items: newItems });
+  }
+
   render() {
+    let filtedItem = this.state.items.filter(item => {
+      if (
+        item.course.indexOf(this.state.search) !== -1 ||
+        item.student_id.indexOf(this.state.search) !== -1 ||
+        item.instructor.indexOf(this.state.search) !== -1
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
     return (
-      <div className="container">
-        <List items={this.state.items} />,
+      <div className="">
+        <div className="row">
+          <button
+            className="btn btn-outline-primary col-3"
+            id="sortbutton"
+            onClick={e => {
+              this.sortModified(e);
+            }}
+          >
+            Click to Sort the List
+          </button>
+        </div>
+        <div className="row">
+          <label className="search-title col-5" htmlFor="course_search">
+            Please enter the
+            <strong>
+              {" "}
+              course-name / student-number / instructor-email
+            </strong>{" "}
+            you want to filter out :
+          </label>
+          <input
+            className="form-control col-7"
+            type="text"
+            id="course_search"
+            value={this.state.search}
+            onChange={this.updateSearch.bind(this)}
+          />
+        </div>
+        {filtedItem.map(item => {
+          return <ListItem key={item._id} item={item} />;
+        })}
       </div>
     );
   }
-}
-
-function List(props) {
-  const items = props.items;
-  const listItems = items.map(item => (
-    <ListItem key={item._id} item={item} admin={true} />
-  ));
-  return <div className="container">{listItems}</div>;
 }
 
 export default SupervisorListing;

@@ -1,4 +1,6 @@
 Enrollment = require("./enrollmentModel");
+Course = require("../course-api/courseModel");
+var allowedTime = 604800000; // 7 days in millisecond
 
 // Handle index actions
 exports.index = function(req, res) {
@@ -75,7 +77,7 @@ exports.delete = function(req, res) {
 
 // return enrollment information of particular student
 exports.enrollment = function(req, res) {
-  Enrollment.find({ student: req.params.student_id }, function(
+  Enrollment.find({ student: req.params.student_id }, async function(
     err,
     enrollment
   ) {
@@ -84,23 +86,48 @@ exports.enrollment = function(req, res) {
     } else {
       res.json({
         message: "Infomation retrived successfully. ",
-        data: formate(enrollment)
+        data: await formate(enrollment)
       });
     }
   });
 };
 
-function formate(enrollment) {
+//formate the return. only return the course that exam data within 7 days
+async function formate(enrollment) {
   var length = enrollment.length;
   var list = [];
   var i;
-  for (i = 0; i < enrollment.length; i++) {
-    var result =
-      "Course: " +
-      enrollment[i].course +
-      "   Section: " +
-      enrollment[i].section;
-    list.push({ value: result, label: result });
+  for (i = 0; i < length; i++) {
+    var course = enrollment[i].course;
+    var section = enrollment[i].section;
+    var courseInfo = await Course.find({ course: course }, function(
+      err,
+      course
+    ) {
+      if (err) {
+        res.send(err);
+      }
+    });
+    var examDate = courseInfo[0].exam_date;
+    let now = new Date();
+    var diff = now - examDate;
+    var result = "Course: " + course + "   Section: " + section;
+    if (diff < allowedTime) {
+      list.push({ value: result, label: result });
+    } else {
+      list.push({
+        value:
+          course +
+          " Section:" +
+          section +
+          " deadline passed, do not select and contact professor or admin office for assistant",
+        label:
+          course +
+          " Section:" +
+          section +
+          " deadline passed, do not select and contact professor or admin office for assistant"
+      });
+    }
   }
   return list;
 }
