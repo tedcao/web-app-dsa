@@ -48,7 +48,7 @@ const formikEnhancer = withFormik({
     phone: "",
     email: "",
     course: "",
-    aggrement: "",
+    aggrement: "false",
     files: [],
     file1_des: "",
     file2_des: "",
@@ -311,7 +311,7 @@ class MyForm extends React.Component {
           <button
             className="btn btn-primary btn-lg col-3"
             type="submit"
-            disabled={isSubmitting}
+            // disabled={isSubmitting}
           >
             Submit
           </button>

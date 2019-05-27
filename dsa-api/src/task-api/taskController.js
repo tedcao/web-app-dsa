@@ -1,6 +1,7 @@
 Task = require("./taskModel");
 var tools = require("./taskInsertHelp");
 Course = require("../course-api/courseModel");
+var email = require("./email/email");
 
 /*------  multre config  ---------*/
 var multer = require("multer");
@@ -81,12 +82,29 @@ exports.insert = function(req, res) {
     task.create_date = new Date().getTime();
 
     // save the enrollment and check for errors
-    task.save(function(err) {
+    task.save(async function(err) {
       if (err) res.json(err);
-      res.json({
-        message: "New task created!",
-        data: task
-      });
+      else {
+        // send out the email
+        await email.studentEmail(
+          name,
+          student_email,
+          student_phone,
+          course,
+          section,
+          files,
+          aggrement,
+          file1_des,
+          file2_des,
+          file3_des
+        );
+        await email.insturctorEmail(name, instructor, course, section);
+        await email.supervisorEmail(name, supervisor, course, section);
+        res.json({
+          message: "New task created!",
+          data: task
+        });
+      }
     });
   });
 

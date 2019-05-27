@@ -8,8 +8,17 @@ class ListItem extends React.Component {
   state = {
     item: this.props.item,
     item_id: this.props.item._id,
-    admin: this.props.admin
+    admin: this.props.admin,
+    aggrement: ""
   };
+  componentDidMount() {
+    if (this.state.item.aggrement) {
+      this.setState({ aggrement: "Yes" });
+    } else {
+      this.setState({ aggrement: "No" });
+    }
+  }
+
   render() {
     return (
       <div className="row item" key={this.key}>
@@ -60,6 +69,14 @@ class ListItem extends React.Component {
             <div className="col-3 name">Submitted Date : </div>
             <div className="col-6">
               <span>{this.state.item.create_date}</span>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-3 name">
+              Registered with Counselling/Disability services :
+            </div>
+            <div className="col-6">
+              <span>{this.state.aggrement}</span>
             </div>
           </div>
           {fileList(this.state.item)}

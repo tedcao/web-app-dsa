@@ -45,7 +45,8 @@ router
   .post(taskController.index); //list all the task
 router.route("/insertTask").post(taskController.insert); //insert new task
 router.route("/updateTask/:task_id").post(taskController.update); //update task based on task id
-router.route("/deleteTask/:task_id").post(taskController.delete); //delete task based on task id
+// router.route("/deleteTask/:task_id").post(taskController.delete); //delete task based on task id
+router.route("/deleteTask/").post(taskController.delete); //delete task based on task id
 router
   .route("/instructor/:instructor_email&:encryptcode")
   .post(taskController.search); //search for tasks based on instructor name

@@ -1,6 +1,6 @@
 Enrollment = require("./enrollmentModel");
 Course = require("../course-api/courseModel");
-var allowedTime = 604800000; // 7 days in millisecond
+var allowedTime = 6048000000; // 7 days in millisecond
 
 // Handle index actions
 exports.index = function(req, res) {
