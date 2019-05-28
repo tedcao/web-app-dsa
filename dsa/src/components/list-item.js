@@ -105,7 +105,7 @@ class ApproveButton extends React.Component {
     e.preventDefault();
     const response = await axios.post(approveRequest);
     if (response.data.data === true) {
-      this.setState({ modified: true });
+      this.setState({ modified: true, approve: true });
     } else {
       console.log("Bad connection");
     }
@@ -115,7 +115,7 @@ class ApproveButton extends React.Component {
     e.preventDefault();
     const response = await axios.post(denyRequest);
     if (response.data.data === true) {
-      this.setState({ modified: true });
+      this.setState({ modified: true, approve: false });
     } else {
       console.log("Bad connection");
     }
@@ -157,7 +157,7 @@ class ApproveButton extends React.Component {
                 this.handleDenyRequest(e);
               }}
             >
-              Denied
+              Deny
             </button>
           </div>
         );
@@ -199,7 +199,7 @@ class ApproveButton extends React.Component {
                 this.handleOverwrite(e);
               }}
             >
-              Overwrite
+              Undo
             </button>
           </div>
         );
@@ -224,7 +224,7 @@ class ApproveButton extends React.Component {
                 this.handleDenyRequest(e);
               }}
             >
-              Denied
+              Deny
             </button>
           </div>
         );

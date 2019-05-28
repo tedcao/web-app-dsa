@@ -52,7 +52,8 @@ const formikEnhancer = withFormik({
     files: [],
     file1_des: "",
     file2_des: "",
-    file3_des: ""
+    file3_des: "",
+    submit: ""
   }),
   handleSubmit: (values, { setSubmitting }) => {
     const payload = {
@@ -311,7 +312,7 @@ class MyForm extends React.Component {
           <button
             className="btn btn-primary btn-lg col-3"
             type="submit"
-            // disabled={isSubmitting}
+            disabled={isSubmitting}
           >
             Submit
           </button>

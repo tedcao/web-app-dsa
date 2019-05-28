@@ -82,11 +82,11 @@ exports.insert = function(req, res) {
     task.create_date = new Date().getTime();
 
     // save the enrollment and check for errors
-    task.save(async function(err) {
+    task.save(function(err) {
       if (err) res.json(err);
       else {
         // send out the email
-        await email.studentEmail(
+        email.studentEmail(
           name,
           student_email,
           student_phone,
@@ -98,8 +98,8 @@ exports.insert = function(req, res) {
           file2_des,
           file3_des
         );
-        await email.insturctorEmail(name, instructor, course, section);
-        await email.supervisorEmail(name, supervisor, course, section);
+        email.insturctorEmail(name, instructor, course, section);
+        email.supervisorEmail(name, supervisor, course, section);
         res.json({
           message: "New task created!",
           data: task
