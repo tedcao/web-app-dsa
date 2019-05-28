@@ -5,6 +5,8 @@ import axios from "axios";
 
 class InsturctorListing extends React.Component {
   state = { items: [], search: "" };
+
+  //retrive task list based on insturctor email
   async Taskinfo(insturctor_email, encryptcode) {
     //use the instructor email to get the corresponding task information
     var url = `http://localhost:8080/api/instructor/${insturctor_email}&${encryptcode}`;
@@ -73,14 +75,17 @@ class InsturctorListing extends React.Component {
   }
 
   render() {
+    // search function, filte the items state
+    // indexOf if not find return -1, !== -1 means found
     let filtedItem = this.state.items.filter(item => {
       if (
         item.course.indexOf(this.state.search) !== -1 ||
-        item.student_id.indexOf(this.state.search) !== -1
+        item.student_id.indexOf(this.state.search) !== -1 ||
+        item._id.indexOf(this.state.search) !== -1
       ) {
-        return true;
+        return true; //keep the record
       } else {
-        return false;
+        return false; //drop the record
       }
     });
     return (

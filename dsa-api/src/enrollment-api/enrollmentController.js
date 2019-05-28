@@ -1,6 +1,6 @@
 Enrollment = require("./enrollmentModel");
 Course = require("../course-api/courseModel");
-var allowedTime = 6048000000; // 7 days in millisecond
+var allowedTime = 6048000000; // 7 / 0 days in millisecond
 
 // Handle index actions
 exports.index = function(req, res) {
@@ -46,6 +46,7 @@ exports.update = function(req, res) {
     enrollment.section = req.body.section;
     enrollment.term = req.body.term;
     enrollment.student = req.body.student;
+    enrollment.dsa_submitted = req.body.dsa_submitted;
 
     // save the Enrollment information and check for errors
     enrollment.save(function(err) {
@@ -94,12 +95,13 @@ exports.enrollment = function(req, res) {
 
 //formate the return. only return the course that exam data within 7 days
 async function formate(enrollment) {
-  var length = enrollment.length;
-  var list = [];
-  var i;
-  for (i = 0; i < length; i++) {
+  var list = []; //initialize the return list
+  //iterate all the enrolled course, check deadline and dsa form history
+  for (var i = 0; i < enrollment.length; i++) {
     var course = enrollment[i].course;
     var section = enrollment[i].section;
+    var dsa_submitted = enrollment[i].dsa_submitted;
+    //retrive the exam_date information from course database
     var courseInfo = await Course.find({ course: course }, function(
       err,
       course
@@ -108,24 +110,37 @@ async function formate(enrollment) {
         res.send(err);
       }
     });
-    var examDate = courseInfo[0].exam_date;
-    let now = new Date();
-    var diff = now - examDate;
+
+    var diff = new Date() - courseInfo[0].exam_date; // determine the time difference between exam date and current date
+
     var result = "Course: " + course + "   Section: " + section;
-    if (diff < allowedTime) {
+    if (diff < allowedTime && dsa_submitted === false) {
       list.push({ value: result, label: result });
+    } else if (diff > allowedTime) {
+      list.push({
+        value:
+          course +
+          " Section:" +
+          section +
+          "DSA deadline passed, Do not select !",
+        label:
+          course +
+          " Section:" +
+          section +
+          "DSA deadline passed, Do not select !"
+      });
     } else {
       list.push({
         value:
           course +
           " Section:" +
           section +
-          " deadline passed, do not select and contact professor or admin office for assistant",
+          " DSA submitted before. Do not select!",
         label:
           course +
           " Section:" +
           section +
-          " deadline passed, do not select and contact professor or admin office for assistant"
+          " DSA submitted before. Do not select!"
       });
     }
   }

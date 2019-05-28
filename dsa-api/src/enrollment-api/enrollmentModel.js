@@ -18,6 +18,10 @@ var enrollmentSchema = mongoose.Schema({
     type: Number,
     require: true
   },
+  dsa_submitted: {
+    type: Boolean,
+    default: false
+  },
   create_date: {
     type: Date,
     default: Date.now

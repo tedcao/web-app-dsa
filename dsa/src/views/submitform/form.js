@@ -53,12 +53,13 @@ const formikEnhancer = withFormik({
     file1_des: "",
     file2_des: "",
     file3_des: "",
-    submit: ""
+    submit: "123"
   }),
   handleSubmit: (values, { setSubmitting }) => {
     const payload = {
       ...values
     };
+
     let formdata = new FormData(); //initialize formdata and append the information to form-data
     formdata.append("student_id", payload.student_number);
     formdata.append("name", payload.name); //not used
@@ -89,7 +90,10 @@ const formikEnhancer = withFormik({
 });
 
 class MyForm extends React.Component {
-  state = { courses: [] };
+  state = {
+    courses: [],
+    submitNotice: ""
+  };
 
   handleSNFieldBlur = e => {
     //function called when student number section lose focus
@@ -102,6 +106,13 @@ class MyForm extends React.Component {
     var url = `http://localhost:8080/api/enrollment_search/${student_number}`;
     const response = await axios.post(url);
     this.setState({ courses: response.data.data });
+  }
+
+  notice(e) {
+    this.setState({
+      submitNotice:
+        "Submitted, Check your email for recipt and reference number. If email was not arrive in 5 mins, please try again later."
+    });
   }
 
   render() {
@@ -118,6 +129,17 @@ class MyForm extends React.Component {
     } = this.props;
     return (
       <form onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="col-12">
+            <strong>Tips: </strong>
+            <br />
+            1. Course selection will be available within 7 days befor exam date.
+            (Otherwise, no results found will show up)
+            <br /> 2. You can submit DSA for only one time for each course.
+            <br />
+            3. Please contact admin office if you have trouble
+          </div>
+        </div>
         <div className="form-group row">
           <label htmlFor="student_number" className="col-2 col-form-label">
             Student Number
@@ -308,14 +330,19 @@ class MyForm extends React.Component {
           </label>
         </div>
         <div className="row">
-          <div className="col-9" />
+          <div className="col-6" />
           <button
-            className="btn btn-primary btn-lg col-3"
+            className="btn btn-primary btn-lg col-6"
             type="submit"
             disabled={isSubmitting}
+            onClick={e => {
+              this.notice(e);
+            }}
           >
             Submit
           </button>
+          <div className="col-6" />
+          <div className="col-6">{this.state.submitNotice}</div>
         </div>
 
         <DisplayFormikState {...this.props} />

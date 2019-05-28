@@ -24,6 +24,12 @@ class ListItem extends React.Component {
       <div className="row item" key={this.key}>
         <div className="col-10">
           <div className="row">
+            <div className="col-3 name">Reference Number : </div>
+            <div className="col-3">
+              <span>{this.state.item._id}</span>
+            </div>
+          </div>
+          <div className="row">
             <div className="col-3 name">Student ID : </div>
             <div className="col-3">
               <span>{this.state.item.student_id}</span>

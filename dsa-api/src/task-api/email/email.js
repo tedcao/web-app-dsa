@@ -18,6 +18,7 @@ let transporter = nodemailer.createTransport({
 
 //email sent to student after form submitted
 async function studentEmail(
+  reference_number,
   name,
   student_email,
   student_phone,
@@ -32,10 +33,11 @@ async function studentEmail(
   const mailOptions = {
     from: account, // sender address
     to: student_email,
-    subject: "Recipt of your exam deffer request",
+    subject: `Recipt of your exam deffer request`,
     html: `<p>Hi ${name} <p>
     <div>This is the email to confirm we received your request.</div>
     <div>Here is the information you submitted</div>
+    <div><strong>Your Reference Number is: </strong>${reference_number}</div>
     <div><strong>Your Phone number: </strong>${student_phone}</div>
     <div><strong>Course: </strong>${course}</div>
     <div><strong>Section: </strong>${section}</div>
@@ -48,8 +50,9 @@ async function studentEmail(
     <br />
     <div>Sent by Web_DSA system</div>`
   };
-  let info = await transporter.sendMail(mailOptions);
-  return info;
+  transporter.sendMail(mailOptions);
+  // let info = await transporter.sendMail(mailOptions);
+  // return info;
 }
 
 //email sent to insturctor after form submitted
@@ -59,7 +62,7 @@ async function insturctorEmail(name, instructor, course, section) {
   const mailOptions = {
     from: account, // sender address
     to: instructor,
-    subject: "Just receive a exam deferred request for course: " + course,
+    subject: `Just receive a exam deferred request for course: ${course}`,
     html: `<p>Dear Insturctor <p>
         <div>Here is the information student submitted</div>
         <div><strong>Student Name: </strong>${name}</div>
@@ -70,8 +73,9 @@ async function insturctorEmail(name, instructor, course, section) {
         <br />
         <div>Sent by Web_DSA system</div>`
   };
-  let info = await transporter.sendMail(mailOptions);
-  return info;
+  transporter.sendMail(mailOptions);
+  // let info = await transporter.sendMail(mailOptions);
+  // return info;
 }
 
 //email sent to supervisor after task changed
@@ -81,7 +85,7 @@ async function supervisorEmail(name, supervisor, course, section) {
   const mailOptions = {
     from: account, // sender address
     to: supervisor,
-    subject: "Just receive a exam deferred request for course: " + course,
+    subject: `Just receive a exam deferred request for course: ${course}`,
     html: `<p>Dear Supervisor <p>
         <div>Here is the information student submitted</div>
         <div><strong>Student Name: </strong>${name}</div>
@@ -92,12 +96,157 @@ async function supervisorEmail(name, supervisor, course, section) {
         <br />
         <div>Sent by Web_DSA system</div>`
   };
-  let info = await transporter.sendMail(mailOptions);
-  return info;
+  transporter.sendMail(mailOptions);
+  // let info = await transporter.sendMail(mailOptions);
+  // return info;
 }
 
 //email sent to student/supervisor/insturctor after task changed
-function taskStateUpdate() {}
+async function taskStateUpdate(
+  state,
+  name,
+  reference_number,
+  course,
+  section,
+  student_id,
+  insturctorEmail,
+  supervisorEmail,
+  studentEmail
+) {
+  //Approved-student
+  const studentEmailApproved = {
+    from: account,
+    to: studentEmail,
+    subject: `DSA request on course: ${course} has been approved`,
+    html: `<p>Hi, ${name}<p>
+        <div>Your DSA request has been <strong>Approved</strong></div>
+        <div><strong>Reference Number: </strong>${reference_number}</div>
+        <div><strong>Student ID: </strong>${student_id}</div>
+        <div><strong>Course: </strong>${course}</div>
+        <div><strong>Section: </strong>${section}</div>
+        <div>Please contact admin office immediately if above information is not correct.</div>
+        <br />
+        <br />
+        <div>Sent by Web_DSA system</div>`
+  };
+  //Approved-instructor
+  const insturctorEmailApproved = {
+    from: account,
+    to: insturctorEmail,
+    subject: `DSA request by student ${name} on course: ${course} has been approved`,
+    html: `<p>Hi, <p>
+        <div>DSA request by student ${name} on course: ${course} has been approved</div>
+        <div><strong>Reference Number: </strong>${reference_number}</div>
+        <div><strong>Student ID: </strong>${student_id}</div>
+        <div><strong>Course: </strong>${course}</div>
+        <div><strong>Section: </strong>${section}</div>
+        <div>Please contact admin office immediately if you did not make the change.</div>
+        <br />
+        <br />
+        <div>Sent by Web_DSA system</div>`
+  };
+  //denied-student
+  const studentEmailDenied = {
+    from: account,
+    to: studentEmail,
+    subject: `DSA request on course: ${course} has been denied`,
+    html: `<p>Hi, ${name}<p>
+        <div>Your DSA request has been <strong>Denied</strong></div>
+        <div><strong>Reference Number: </strong>${reference_number}</div>
+        <div><strong>Student ID: </strong>${student_id}</div>
+        <div><strong>Course: </strong>${course}</div>
+        <div><strong>Section: </strong>${section}</div>
+        <div>Please contact admin office immediately if above information is not correct.</div>
+        <br />
+        <br />
+        <div>Sent by Web_DSA system</div>`
+  };
+  //denied-insturctor
+  const insturctorEmailDenied = {
+    from: account,
+    to: insturctorEmail,
+    subject: `DSA request by student ${name} on course: ${course} has been denied`,
+    html: `<p>Hi, <p>
+        <div>DSA request by student ${name} on course: ${course} has been denied</div>
+        <div><strong>Reference Number: </strong>${reference_number}</div>
+        <div><strong>Student ID: </strong>${student_id}</div>
+        <div><strong>Course: </strong>${course}</div>
+        <div><strong>Section: </strong>${section}</div>
+        <div>Please contact admin office immediately if you did not make the change.</div>
+        <br />
+        <br />
+        <div>Sent by Web_DSA system</div>`
+  };
+  //undo-student
+  const studentEmailUndo = {
+    from: account,
+    to: studentEmail,
+    subject: `DSA decision on course: ${course} has been undo by admin`,
+    html: `<p>Hi, ${name}<p>
+        <div>Your DSA request has been <strong>Undo by admin</strong></div>
+        <div><strong>Reference Number: </strong>${reference_number}</div>
+        <div><strong>Student ID: </strong>${student_id}</div>
+        <div><strong>Course: </strong>${course}</div>
+        <div><strong>Section: </strong>${section}</div>
+        <div>Professor are reconsidering about the decision made on your DSA request.</div>
+        <div>You will receive the notification of final decision shortly.</div>
+        <div>Please contact admin office immediately if above information is not correct.</div>
+        <br />
+        <br />
+        <div>Sent by Web_DSA system</div>`
+  };
+  //undo-instructor
+  var hashedEmail = crypt.encrypt(insturctorEmail);
+  var insturctorListUrl =
+    urlPrefix + "instructor/" + insturctorEmail + "&" + hashedEmail;
+  const insturctorEmailUndo = {
+    from: account,
+    to: insturctorEmail,
+    subject: `DSA decision for student ${name} on course: ${course} has been undo by admin`,
+    html: `<p>Hi, <p>
+        <div>DSA request by student ${name} on course: ${course} has been undo by admin</div>
+        <div><strong>Reference Number: </strong>${reference_number}</div>
+        <div><strong>Student ID: </strong>${student_id}</div>
+        <div><strong>Course: </strong>${course}</div>
+        <div><strong>Section: </strong>${section}</div>
+        <div><a href = ${insturctorListUrl}>Click to get more information > </a></div>
+        <br />
+        <br />
+        <div>Sent by Web_DSA system</div>`
+  };
+  //undo-supervisor
+  var hashedEmail = crypt.encrypt(supervisorEmail);
+  var supervisorListUrl =
+    urlPrefix + "supervisor/" + supervisorEmail + "&" + hashedEmail;
+  const supervisorEmailUndo = {
+    from: account,
+    to: supervisorEmail,
+    subject: `DSA decision for student ${name} on course: ${course} has been undo`,
+    html: `<p>Hi, <p>
+        <div>DSA request by student ${name} on course: ${course} has been undo</div>
+        <div><strong>Reference Number: </strong>${reference_number}</div>
+        <div><strong>Student ID: </strong>${student_id}</div>
+        <div><strong>Course: </strong>${course}</div>
+        <div><strong>Section: </strong>${section}</div>
+        <div><a href = ${supervisorListUrl}>Click to get more information > </a></div>
+        <br />
+        <br />
+        <div>Sent by Web_DSA system</div>`
+  };
+  if (state === "Approved") {
+    transporter.sendMail(studentEmailApproved);
+    transporter.sendMail(insturctorEmailApproved);
+  }
+  if (state === "Denied") {
+    transporter.sendMail(studentEmailDenied);
+    transporter.sendMail(insturctorEmailDenied);
+  }
+  if (state === "Undo") {
+    transporter.sendMail(studentEmailUndo);
+    transporter.sendMail(insturctorEmailUndo);
+    transporter.sendMail(supervisorEmailUndo);
+  }
+}
 
 //scheduled email notified number of task need attention on
 function scheduledEmail() {}

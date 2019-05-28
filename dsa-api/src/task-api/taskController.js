@@ -1,6 +1,7 @@
 Task = require("./taskModel");
 var tools = require("./taskInsertHelp");
 Course = require("../course-api/courseModel");
+Enrollment = require("../enrollment-api/enrollmentModel");
 var email = require("./email/email");
 
 /*------  multre config  ---------*/
@@ -85,8 +86,21 @@ exports.insert = function(req, res) {
     task.save(function(err) {
       if (err) res.json(err);
       else {
+        Enrollment.findOneAndUpdate(
+          { student: student_id, course: course, section: section },
+          { $set: { dsa_submitted: true } },
+          { useFindAndModify: false },
+          (err, enrollment) => {
+            if (err) res.json(err);
+            // res.json({
+            //   message: "updated",
+            //   data: enrollment
+            // });
+          }
+        );
         // send out the email
         email.studentEmail(
+          task._id,
           name,
           student_email,
           student_phone,
@@ -154,7 +168,7 @@ exports.delete = function(req, res) {
   );
 };
 
-// return search based on the sinstructor email
+// return search based on the instructor email
 exports.search = function(req, res) {
   if (tools.decrypt(req.params.encryptcode) == req.params.instructor_email) {
     Task.find(
@@ -181,8 +195,20 @@ exports.approve = function(req, res) {
     if (err) res.send(err);
     task.approve = true;
     task.modified = true;
+    email.taskStateUpdate(
+      "Approved",
+      task.name,
+      task._id,
+      task.course,
+      task.section,
+      task.student_id,
+      task.instructor,
+      task.supervisor,
+      task.student_email
+    );
     task.save(function(err) {
       if (err) res.json(err);
+
       res.json({
         message: "Task information updated",
         data: true
@@ -198,6 +224,17 @@ exports.deny = function(req, res) {
     task.modified = true;
     task.save(function(err) {
       if (err) res.json(err);
+      email.taskStateUpdate(
+        "Denied",
+        task.name,
+        task._id,
+        task.course,
+        task.section,
+        task.student_id,
+        task.instructor,
+        task.supervisor,
+        task.student_email
+      );
       res.json({
         message: "Task information updated",
         data: true
@@ -212,6 +249,17 @@ exports.overwrite = function(req, res) {
     task.modified = false;
     task.save(function(err) {
       if (err) res.json(err);
+      email.taskStateUpdate(
+        "Undo",
+        task.name,
+        task._id,
+        task.course,
+        task.section,
+        task.student_id,
+        task.instructor,
+        task.supervisor,
+        task.student_email
+      );
       res.json({
         message: "Task information updated",
         data: true

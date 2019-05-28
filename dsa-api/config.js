@@ -1,5 +1,5 @@
 // Hash Configuration
-var algorithm = "aes-256-ctr";
+var algorithm = "aes192";
 var password = "d6F3Efeq";
 
 var emailAccount = "webdsaform@gmail.com";
