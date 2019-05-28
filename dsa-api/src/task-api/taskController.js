@@ -16,6 +16,8 @@ var upload = multer({ dest: file_destination }).fields([
 
 // Handle index actions
 exports.index = function(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   if (tools.decrypt(req.params.encryptcode) == req.params.supervisor_email) {
     Task.find(
       {
@@ -38,6 +40,8 @@ exports.index = function(req, res) {
 
 // Insert new task information
 exports.insert = function(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   /*----   Function of uploading files -------*/
   upload(req, res, async function(err) {
     if (err instanceof multer.MulterError) {
@@ -86,6 +90,7 @@ exports.insert = function(req, res) {
     task.save(function(err) {
       if (err) res.json(err);
       else {
+        //after DSA form submitted, Enrollment table dsa_submitted section need to be changed to true
         Enrollment.findOneAndUpdate(
           { student: student_id, course: course, section: section },
           { $set: { dsa_submitted: true } },
@@ -93,8 +98,7 @@ exports.insert = function(req, res) {
           (err, enrollment) => {
             if (err) res.json(err);
             // res.json({
-            //   message: "updated",
-            //   data: enrollment
+            //   message: "updated"
             // });
           }
         );
@@ -126,6 +130,8 @@ exports.insert = function(req, res) {
 };
 
 exports.update = function(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   Task.findById(req.params.task_id, function(err, task) {
     if (err) res.send(err);
     task.student_id = req.body.student_id;
@@ -170,6 +176,8 @@ exports.delete = function(req, res) {
 
 // return search based on the instructor email
 exports.search = function(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   if (tools.decrypt(req.params.encryptcode) == req.params.instructor_email) {
     Task.find(
       {
@@ -191,6 +199,8 @@ exports.search = function(req, res) {
 };
 
 exports.approve = function(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   Task.findById(req.params.task_id, function(err, task) {
     if (err) res.send(err);
     task.approve = true;
@@ -218,6 +228,8 @@ exports.approve = function(req, res) {
 };
 
 exports.deny = function(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   Task.findById(req.params.task_id, function(err, task) {
     if (err) res.send(err);
     task.approve = false;
@@ -244,6 +256,8 @@ exports.deny = function(req, res) {
 };
 
 exports.overwrite = function(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   Task.findById(req.params.task_id, function(err, task) {
     if (err) res.send(err);
     task.modified = false;

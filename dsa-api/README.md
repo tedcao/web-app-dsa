@@ -1,11 +1,25 @@
-Each modification will be done through API, add courses and so on.
+dsa-api
 
-MongoDB structure
-Table 1 enrollment: id | Course | section | term | student (ID) | create_date
-Table 2 course : id | Course name | section number | term | instructor | supervisor
-Table 3 audit : id | student ID | Course name | section number | term | instructor | supervior | approve
+backend of DSA system
 
-Node.js
-All the action done on modify table 3 will send out email. Insert data, modify data, delete data.
+Node.js + Mongodb and Mongoose
 
-API list --- All post method can be fine under api-routes.js
+Mongoose auth setting is under index.js file
+
+File Structure overview:
+    - src
+     -course-api
+        --courseController.js
+        --courseModel.js
+    -enrollment-api
+        --enrommentController.js
+        --enrollmentModel.js
+    -file-api
+        --fileController.js
+    -task-api
+        -email
+            -email.js
+        --taskCOntroller.js
+        --taskModel.js
+    -uploads
+    --api-routes.js

@@ -1,3 +1,5 @@
+//config file for dsa-api
+
 // Hash Configuration
 var algorithm = "aes192";
 var password = "d6F3Efeq";

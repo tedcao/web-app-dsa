@@ -85,6 +85,8 @@ exports.enrollment = function(req, res) {
     if (err) {
       res.send(err);
     } else {
+      res.setHeader("Content-Type", "application/json");
+      res.setHeader("Access-Control-Allow-Origin", "*");
       res.json({
         message: "Infomation retrived successfully. ",
         data: await formate(enrollment)

@@ -2,16 +2,20 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { ListItem } from "../../components/list-item";
 import axios from "axios";
+var config = require("../../config");
 
 class SupervisorListing extends React.Component {
   state = { items: [], search: "" };
   async Taskinfo(supervisor_email, encryptcode) {
     //use the instructor email to get the corresponding task information
-    var url = `http://localhost:8080/api/supervisor/${supervisor_email}&${encryptcode}`;
+    var url = `${
+      config.urlPrefix
+    }supervisor/${supervisor_email}&${encryptcode}`;
     const response = await axios.post(url);
     this.setState({ items: response.data.data });
   }
 
+  //set up search state when search text changed
   updateSearch(event) {
     this.setState({ search: event.target.value.substr(0, 20) });
   }

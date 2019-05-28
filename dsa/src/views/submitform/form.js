@@ -19,8 +19,7 @@ const dropzoneStyle = {
   borderStyle: "dashed",
   borderRadius: 5
 };
-
-// const queryString = require("query-string");
+var config = require("../../config");
 
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
@@ -78,7 +77,7 @@ const formikEnhancer = withFormik({
     axios({
       //send the form-data to inserttask using post method
       enctype: "multipart/form-data",
-      url: "http://localhost:8080/api/insertTask",
+      url: config.urlPrefix + "insertTask",
       method: "POST",
       data: formdata
     }).then(res => {
@@ -103,7 +102,7 @@ class MyForm extends React.Component {
 
   async CourseList(student_number) {
     //use the student number to get the corresponding course information by using  /enrollment_search/:student_id
-    var url = `http://localhost:8080/api/enrollment_search/${student_number}`;
+    var url = `${config.urlPrefix}enrollment_search/${student_number}`;
     const response = await axios.post(url);
     this.setState({ courses: response.data.data });
   }
@@ -345,7 +344,7 @@ class MyForm extends React.Component {
           <div className="col-6">{this.state.submitNotice}</div>
         </div>
 
-        <DisplayFormikState {...this.props} />
+        {/* <DisplayFormikState {...this.props} /> */}
       </form>
     );
   }

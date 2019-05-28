@@ -2,7 +2,8 @@ import React from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
 import "./list-item.css";
-var fileRequestPrefix = "http://localhost:8080/api/file/";
+var config = require("../config");
+var fileRequestPrefix = config.urlPrefix + "file/";
 
 class ListItem extends React.Component {
   state = {
@@ -11,6 +12,7 @@ class ListItem extends React.Component {
     admin: this.props.admin,
     aggrement: ""
   };
+  //check aggrement and translate true/false to yes/no
   componentDidMount() {
     if (this.state.item.aggrement) {
       this.setState({ aggrement: "Yes" });
@@ -39,6 +41,12 @@ class ListItem extends React.Component {
             <div className="col-3 name">Student Name : </div>
             <div className="col-3">
               <span>{this.state.item.name}</span>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-3 name">Student Email : </div>
+            <div className="col-3">
+              <span>{this.state.item.student_email}</span>
             </div>
           </div>
           <div className="row">
@@ -105,9 +113,9 @@ class ApproveButton extends React.Component {
     id: this.props.id,
     admin: this.props.admin
   };
-
+  //function - call approve api
   async handleApproveRequest(e) {
-    var approveRequest = "http://localhost:8080/api/approve/" + this.props.id;
+    var approveRequest = config.urlPrefix + "approve/" + this.props.id;
     e.preventDefault();
     const response = await axios.post(approveRequest);
     if (response.data.data === true) {
@@ -116,8 +124,9 @@ class ApproveButton extends React.Component {
       console.log("Bad connection");
     }
   }
+  //function - call deny api
   async handleDenyRequest(e) {
-    var denyRequest = "http://localhost:8080/api/deny/" + this.props.id;
+    var denyRequest = config.urlPrefix + "deny/" + this.props.id;
     e.preventDefault();
     const response = await axios.post(denyRequest);
     if (response.data.data === true) {
@@ -126,10 +135,9 @@ class ApproveButton extends React.Component {
       console.log("Bad connection");
     }
   }
-
+  //function - call overwrite api (undo)
   async handleOverwrite(e) {
-    var overwriteRequest =
-      "http://localhost:8080/api/overwrite/" + this.props.id;
+    var overwriteRequest = config.urlPrefix + "overwrite/" + this.props.id;
     e.preventDefault();
     const response = await axios.post(overwriteRequest);
     if (response.data.data === true) {
@@ -184,7 +192,7 @@ class ApproveButton extends React.Component {
                 this.handleOverwrite(e);
               }}
             >
-              Overwrite
+              Undo
             </button>
           </div>
         );
@@ -263,6 +271,7 @@ class ApproveButton extends React.Component {
   }
 }
 
+//show the files name and description if exists
 function fileList(item) {
   var objectValue = JSON.parse(item.files);
   var file1name, file2name, file3name; //file name initial

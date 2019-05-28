@@ -2,6 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { ListItem } from "../../components/list-item";
 import axios from "axios";
+var config = require("../../config");
 
 class InsturctorListing extends React.Component {
   state = { items: [], search: "" };
@@ -9,15 +10,16 @@ class InsturctorListing extends React.Component {
   //retrive task list based on insturctor email
   async Taskinfo(insturctor_email, encryptcode) {
     //use the instructor email to get the corresponding task information
-    var url = `http://localhost:8080/api/instructor/${insturctor_email}&${encryptcode}`;
+    var url = `${
+      config.urlPrefix
+    }instructor/${insturctor_email}&${encryptcode}`;
     const response = await axios.post(url);
     this.setState({ items: response.data.data });
   }
-
+  //set up research state when research text modified
   updateSearch(event) {
     this.setState({ search: event.target.value.substr(0, 20) });
   }
-
   componentDidMount() {
     //function called when paged loaded
     this.Taskinfo(

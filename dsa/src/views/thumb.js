@@ -1,5 +1,6 @@
 import React from "react";
-
+//get the list of the file
+//also able to show preview of image file, function disabled for now
 export default class Thumb extends React.Component {
   state = {
     loading: false,
