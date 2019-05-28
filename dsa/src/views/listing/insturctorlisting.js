@@ -140,7 +140,9 @@ class InsturctorListing extends React.Component {
         </div>
         <div className="row">
           <label className="search-title col-5" htmlFor="course_search">
-            Please enter the course-name/student-number you want to filter out :
+            Please enter the{" "}
+            <strong> course-name / student-number / reference-number</strong>{" "}
+            you want to filter out :
           </label>
           <input
             className="form-control col-7"
