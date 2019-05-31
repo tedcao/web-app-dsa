@@ -1,4 +1,5 @@
 # web-app-dsa
+York University Exam Deferred Standing system. (EECS4070)
 
 Development Environment building
 
