@@ -3,12 +3,7 @@ import React from "react";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import "react-select/dist/react-select.css";
-import {
-  DisplayFormikState,
-  FacultySelect,
-  CourseSelect,
-  ListThumb
-} from "./help";
+import { FacultySelect, CourseSelect, ListThumb } from "./help";
 import axios from "axios";
 import Dropzone from "react-dropzone";
 const dropzoneStyle = {
@@ -36,9 +31,11 @@ const formikEnhancer = withFormik({
       .max(10, "Please enter a valid phone number")
       .required("Please entre your phone number"),
     email: Yup.string()
-      .email("Invalid email address")
+      .matches(
+        /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(my.yorku)\.ca$/,
+        "Invalid email address, please entre your yorku email"
+      )
       .required("Email is required!")
-    // course: Yup.string().required("Course is required!")
   }),
   mapPropsToValues: props => ({
     student_number: "",
@@ -81,6 +78,9 @@ const formikEnhancer = withFormik({
       method: "POST",
       data: formdata
     }).then(res => {
+      alert(
+        "Submitted, Check your email for recipt and reference number. If email was not arrive in 5 mins, please try again later."
+      );
       console.log(res);
     });
   },
@@ -105,13 +105,6 @@ class MyForm extends React.Component {
     var url = `${config.urlPrefix}enrollment_search/${student_number}`;
     const response = await axios.post(url);
     this.setState({ courses: response.data.data });
-  }
-
-  notice(e) {
-    this.setState({
-      submitNotice:
-        "Submitted, Check your email for recipt and reference number. If email was not arrive in 5 mins, please try again later."
-    });
   }
 
   render() {
@@ -334,17 +327,11 @@ class MyForm extends React.Component {
             className="btn btn-primary btn-lg col-6"
             type="submit"
             disabled={isSubmitting}
-            onClick={e => {
-              this.notice(e);
-            }}
           >
             Submit
           </button>
           <div className="col-6" />
-          <div className="col-6">{this.state.submitNotice}</div>
         </div>
-
-        {/* <DisplayFormikState {...this.props} /> */}
       </form>
     );
   }

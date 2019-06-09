@@ -1,0 +1,11 @@
+db.createUser({
+      user: "admin",
+      pwd: "yorkudsa",
+      roles: [
+                { role: "userAdminAnyDatabase", db: "admin" },
+                { role: "readWriteAnyDatabase", db: "admin" },
+                { role: "dbAdminAnyDatabase",   db: "admin" }
+             ]
+  });
+
+68.183.193.65
