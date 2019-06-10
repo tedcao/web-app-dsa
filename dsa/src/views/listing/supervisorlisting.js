@@ -82,7 +82,8 @@ class SupervisorListing extends React.Component {
         item.course.indexOf(this.state.search) !== -1 ||
         item.student_id.indexOf(this.state.search) !== -1 ||
         item.instructor.indexOf(this.state.search) !== -1 ||
-        item._id.indexOf(this.state.search) !== -1
+        item._id.indexOf(this.state.search) !== -1 ||
+        item.reference_number.toString().indexOf(this.state.search) !== -1
       ) {
         return true;
       } else {
@@ -145,6 +146,7 @@ class SupervisorListing extends React.Component {
             <strong>
               {" "}
               course-name / student-number / instructor-email / reference-number
+              / request-id
             </strong>{" "}
             you want to filter out :
           </label>

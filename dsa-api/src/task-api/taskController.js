@@ -49,6 +49,21 @@ exports.insert = function(req, res) {
     } else if (err) {
       return res.status(500).json(err);
     }
+    await Task.find()
+      .sort({ _id: -1 })
+      .skip(0)
+      .limit(1)
+      .exec(function(err, docs) {
+        if (err) {
+          res.send(err);
+        } else {
+          if (docs[0].reference_number) {
+            last_reference_number = docs[0].reference_number;
+          } else {
+            last_reference_number = 100001;
+          }
+        }
+      });
     var courseandsection = await req.body.courseandsection;
     var student_id = req.body.student_id;
     var name = req.body.name;
@@ -58,9 +73,6 @@ exports.insert = function(req, res) {
     var course = courseandsection.substring(8, 16);
     var section = courseandsection.substring(28);
     let instructor = await tools.getInstructor(course, section, res); //reteive instructor email form course table
-    //get the hash of insturctor email and assign to encrypt
-    // let encryptcode = await tools.encrypt(instructor);
-    // let decrypted = await tools.decrypt(encryptcode);
     let supervisor = await tools.getSupervisor(course, section, res); // retrive supervisor email from course table
     var aggrement = req.body.aggrement;
     var files = JSON.stringify(req.files);
@@ -69,6 +81,7 @@ exports.insert = function(req, res) {
     var file3_des = req.body.file3_des;
 
     var task = new Task();
+    task.reference_number = last_reference_number + 1;
     task.student_id = student_id;
     task.course = course;
     task.section = section;
@@ -77,7 +90,6 @@ exports.insert = function(req, res) {
     task.student_phone = student_phone;
     task.home_faculty = home_faculty;
     task.instructor = instructor;
-    // task.encryptcode = encryptcode;
     task.supervisor = supervisor;
     task.files = files;
     task.aggrement = aggrement;
@@ -105,6 +117,7 @@ exports.insert = function(req, res) {
         // send out the email
         email.studentEmail(
           task._id,
+          task.reference_number,
           name,
           student_email,
           student_phone,
@@ -209,6 +222,7 @@ exports.approve = function(req, res) {
       "Approved",
       task.name,
       task._id,
+      task.reference_number,
       task.course,
       task.section,
       task.student_id,
@@ -240,6 +254,7 @@ exports.deny = function(req, res) {
         "Denied",
         task.name,
         task._id,
+        task.reference_number,
         task.course,
         task.section,
         task.student_id,
@@ -267,6 +282,7 @@ exports.overwrite = function(req, res) {
         "Undo",
         task.name,
         task._id,
+        task.reference_number,
         task.course,
         task.section,
         task.student_id,

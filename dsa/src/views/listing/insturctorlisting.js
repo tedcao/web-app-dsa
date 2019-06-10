@@ -83,7 +83,8 @@ class InsturctorListing extends React.Component {
       if (
         item.course.indexOf(this.state.search) !== -1 ||
         item.student_id.indexOf(this.state.search) !== -1 ||
-        item._id.indexOf(this.state.search) !== -1
+        item._id.indexOf(this.state.search) !== -1 ||
+        item.reference_number.toString().indexOf(this.state.search) !== -1
       ) {
         return true; //keep the record
       } else {
@@ -143,7 +144,10 @@ class InsturctorListing extends React.Component {
         <div className="row">
           <label className="search-title col-5" htmlFor="course_search">
             Please enter the{" "}
-            <strong> course-name / student-number / reference-number</strong>{" "}
+            <strong>
+              {" "}
+              course-name / student-number / reference-number / request-id
+            </strong>{" "}
             you want to filter out :
           </label>
           <input

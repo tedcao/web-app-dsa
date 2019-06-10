@@ -18,6 +18,7 @@ let transporter = nodemailer.createTransport({
 
 //email sent to student after form submitted
 async function studentEmail(
+  _id,
   reference_number,
   name,
   student_email,
@@ -37,6 +38,7 @@ async function studentEmail(
     html: `<p>Hi ${name} <p>
     <div>This is the email to confirm we received your request.</div>
     <div>Here is the information you submitted</div>
+    <div><strong>Your Request ID is: </strong>${_id}</div>
     <div><strong>Your Reference Number is: </strong>${reference_number}</div>
     <div><strong>Your Phone number: </strong>${student_phone}</div>
     <div><strong>Course: </strong>${course}</div>
@@ -105,6 +107,7 @@ async function supervisorEmail(name, supervisor, course, section) {
 async function taskStateUpdate(
   state,
   name,
+  _id,
   reference_number,
   course,
   section,
@@ -120,6 +123,7 @@ async function taskStateUpdate(
     subject: `DSA request on course: ${course} has been approved`,
     html: `<p>Hi, ${name}<p>
         <div>Your DSA request has been <strong>Approved</strong></div>
+        <div><strong>Your Request ID is: </strong>${_id}</div>
         <div><strong>Reference Number: </strong>${reference_number}</div>
         <div><strong>Student ID: </strong>${student_id}</div>
         <div><strong>Course: </strong>${course}</div>
@@ -136,6 +140,7 @@ async function taskStateUpdate(
     subject: `DSA request by student ${name} on course: ${course} has been approved`,
     html: `<p>Hi, <p>
         <div>DSA request by student ${name} on course: ${course} has been approved</div>
+        <div><strong>Your Request ID is: </strong>${_id}</div>
         <div><strong>Reference Number: </strong>${reference_number}</div>
         <div><strong>Student ID: </strong>${student_id}</div>
         <div><strong>Course: </strong>${course}</div>
@@ -152,6 +157,7 @@ async function taskStateUpdate(
     subject: `DSA request on course: ${course} has been denied`,
     html: `<p>Hi, ${name}<p>
         <div>Your DSA request has been <strong>Denied</strong></div>
+        <div><strong>Your Request ID is: </strong>${_id}</div>
         <div><strong>Reference Number: </strong>${reference_number}</div>
         <div><strong>Student ID: </strong>${student_id}</div>
         <div><strong>Course: </strong>${course}</div>
@@ -168,6 +174,7 @@ async function taskStateUpdate(
     subject: `DSA request by student ${name} on course: ${course} has been denied`,
     html: `<p>Hi, <p>
         <div>DSA request by student ${name} on course: ${course} has been denied</div>
+        <div><strong>Your Request ID is: </strong>${_id}</div>
         <div><strong>Reference Number: </strong>${reference_number}</div>
         <div><strong>Student ID: </strong>${student_id}</div>
         <div><strong>Course: </strong>${course}</div>
@@ -184,6 +191,7 @@ async function taskStateUpdate(
     subject: `DSA decision on course: ${course} has been undo by admin`,
     html: `<p>Hi, ${name}<p>
         <div>Your DSA request has been <strong>Undo by admin</strong></div>
+        <div><strong>Your Request ID is: </strong>${_id}</div>
         <div><strong>Reference Number: </strong>${reference_number}</div>
         <div><strong>Student ID: </strong>${student_id}</div>
         <div><strong>Course: </strong>${course}</div>
@@ -205,6 +213,7 @@ async function taskStateUpdate(
     subject: `DSA decision for student ${name} on course: ${course} has been undo by admin`,
     html: `<p>Hi, <p>
         <div>DSA request by student ${name} on course: ${course} has been undo by admin</div>
+        <div><strong>Your Request ID is: </strong>${_id}</div>
         <div><strong>Reference Number: </strong>${reference_number}</div>
         <div><strong>Student ID: </strong>${student_id}</div>
         <div><strong>Course: </strong>${course}</div>
@@ -224,6 +233,7 @@ async function taskStateUpdate(
     subject: `DSA decision for student ${name} on course: ${course} has been undo`,
     html: `<p>Hi, <p>
         <div>DSA request by student ${name} on course: ${course} has been undo</div>
+        <div><strong>Your Request ID is: </strong>${_id}</div>
         <div><strong>Reference Number: </strong>${reference_number}</div>
         <div><strong>Student ID: </strong>${student_id}</div>
         <div><strong>Course: </strong>${course}</div>

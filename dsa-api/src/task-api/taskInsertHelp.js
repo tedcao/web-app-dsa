@@ -1,4 +1,5 @@
 Course = require("../course-api/courseModel");
+Task = require("./taskModel");
 var hashConfig = require("../../config"); //hash passward and information
 var crypto = require("crypto");
 

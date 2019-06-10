@@ -2,6 +2,10 @@ var mongoose = require("mongoose");
 
 // Setup schema
 var taskSchema = mongoose.Schema({
+  reference_number: {
+    type: Number,
+    requires: true
+  },
   student_id: {
     type: String,
     required: true

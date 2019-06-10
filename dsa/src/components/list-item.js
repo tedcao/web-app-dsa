@@ -26,9 +26,15 @@ class ListItem extends React.Component {
       <div className="row item" key={this.key}>
         <div className="col-10">
           <div className="row">
-            <div className="col-3 name">Reference Number : </div>
+            <div className="col-3 name">Request ID : </div>
             <div className="col-3">
               <span>{this.state.item._id}</span>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-3 name">Reference Number : </div>
+            <div className="col-3">
+              <span>{this.state.item.reference_number}</span>
             </div>
           </div>
           <div className="row">
@@ -119,6 +125,7 @@ class ApproveButton extends React.Component {
     e.preventDefault();
     const response = await axios.post(approveRequest);
     if (response.data.data === true) {
+      //change the state after success feedback send back
       this.setState({ modified: true, approve: true });
     } else {
       console.log("Bad connection");
@@ -130,6 +137,7 @@ class ApproveButton extends React.Component {
     e.preventDefault();
     const response = await axios.post(denyRequest);
     if (response.data.data === true) {
+      //change the state after success feedback send back
       this.setState({ modified: true, approve: false });
     } else {
       console.log("Bad connection");
@@ -141,6 +149,7 @@ class ApproveButton extends React.Component {
     e.preventDefault();
     const response = await axios.post(overwriteRequest);
     if (response.data.data === true) {
+      //change the state after success feedback send back
       this.setState({ modified: false });
     } else {
       console.log("Bad connection");
