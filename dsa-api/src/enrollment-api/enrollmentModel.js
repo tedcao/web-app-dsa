@@ -14,13 +14,15 @@ var enrollmentSchema = mongoose.Schema({
     type: String,
     require: true
   },
+  // student number
   student: {
     type: Number,
     require: true
   },
   dsa_submitted: {
     type: Boolean,
-    default: false
+    default: false,
+    require: true
   },
   create_date: {
     type: Date,

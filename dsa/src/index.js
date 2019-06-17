@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MyEnhancedForm from "./views/submitform/form";
+import StudentDataUpload from "./views/studentDataUpload/studentDataUpload";
 import InsturctorListing from "./views/listing/insturctorlisting";
 import SupervisorListing from "./views/listing/supervisorlisting";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -12,6 +13,10 @@ const routes = [
   {
     path: "/submitform",
     component: MyEnhancedForm
+  },
+  {
+    path: "/uploadStudentData",
+    component: StudentDataUpload
   },
   {
     path: "/instructor/:insturctor_email&:encryptcode",
@@ -65,6 +70,11 @@ function RouteConfigExample() {
               <li className="nav-item active">
                 <Link className="navbar-brand mb-0 h1" to="/submitform">
                   Student Submit From
+                </Link>
+              </li>
+              <li className="nav-item active">
+                <Link className="navbar-brand mb-0 h1" to="/uploadStudentData">
+                  Upload Data
                 </Link>
               </li>
             </ul>

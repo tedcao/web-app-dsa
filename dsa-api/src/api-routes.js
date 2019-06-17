@@ -56,6 +56,12 @@ router.route("/deny/:task_id").post(taskController.deny); //deny the task with c
 router.route("/overwrite/:task_id").post(taskController.overwrite);
 /* ------   End of Task router  -----------*/
 
+router
+  .route("/uploadCourseInformation/")
+  .post(fileController.uploadCourseInformation);
+router
+  .route("/uploadEnrollmentInformation/")
+  .post(fileController.uploadEnrollmentInformation);
 router.route("/file/:file_name").get(fileController.get); //file download link
 
 // Export API routes

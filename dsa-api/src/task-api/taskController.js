@@ -7,11 +7,9 @@ var email = require("./email/email");
 /*------  multre config  ---------*/
 var multer = require("multer");
 var file_destination = "./uploads/";
-// var upload = multer({ dest: file_destination }).array("file", 3);
 var upload = multer({ dest: file_destination }).fields([
   { name: "file", maxCount: 3 }
 ]);
-// var textupload = multer({ dest: file_destination }).none();
 /*------   end of multre config   ------*/
 
 // Handle index actions
@@ -57,8 +55,8 @@ exports.insert = function(req, res) {
         if (err) {
           res.send(err);
         } else {
-          if (docs[0].reference_number) {
-            last_reference_number = docs[0].reference_number;
+          if (docs.length) {
+            last_reference_number = docs[0].reference_number + 1;
           } else {
             last_reference_number = 100001;
           }
@@ -81,7 +79,7 @@ exports.insert = function(req, res) {
     var file3_des = req.body.file3_des;
 
     var task = new Task();
-    task.reference_number = last_reference_number + 1;
+    task.reference_number = last_reference_number;
     task.student_id = student_id;
     task.course = course;
     task.section = section;

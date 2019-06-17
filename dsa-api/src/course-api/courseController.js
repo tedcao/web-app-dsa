@@ -25,6 +25,7 @@ exports.insert = function(req, res) {
   // course.term = req.body.term;
   course.instructor = req.body.instructor;
   course.supervisor = req.body.supervisor;
+  course.exam_date = req.body.exam_date;
 
   // save the course and check for errors
   course.save(function(err) {

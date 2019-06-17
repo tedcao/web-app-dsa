@@ -1,4 +1,5 @@
 # web-app-dsa
+
 York University Exam Deferred Standing system. (EECS4070)
 
 Development Environment building
@@ -60,3 +61,32 @@ navigate to dsa:
 sudo npm start
 navigate to dsa-api
 sudo nodemon index
+
+Initializing the database:
+
+1. Install POSTMAN: https://www.getpostman.com
+2. Use POSTMAN to send post request to insert course API
+   Mongoose will create the missing database and information automaticly.
+   Request URL: http://localhost:8080/api/insertCourse
+   Body with type (x-www-form-urlencoded)
+   Key : Value
+   course:EECS4080
+   section:B
+   instructor:{email}
+   supervisor:{email}
+   exam_date:{1560715890999 (Date in millisecond)}
+3. Use POSTMAN to send post request to insert enrollment information API
+   Request URL: http://localhost:8080/api/insertEnrollment
+   Body with type (x-www-form-urlencoded)
+   Key : Value
+   course:EECS4080
+   section:B
+   term:F
+   student:100000001
+4. Then go ahead and use the submit form. Task table will be automaticlly created for you.
+
+To read the program, it is better to have visual studio with following plugins:
+ES7 React
+Express
+BootStrap 4
+Prettier
