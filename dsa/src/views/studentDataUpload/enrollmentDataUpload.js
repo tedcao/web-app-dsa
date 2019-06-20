@@ -7,7 +7,8 @@ class EnrollmentDataUoload extends React.Component {
     console.log(event.target.files[0]);
     this.setState({
       file: event.target.files[0],
-      message: ""
+      message: "",
+      disabled: false
     });
   };
   onClickHandler = () => {
@@ -21,14 +22,18 @@ class EnrollmentDataUoload extends React.Component {
       method: "POST",
       data: data
     }).then(res => {
-      this.setState({ message: res });
+      this.setState({ message: res.data.data, display: true });
     });
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      file1: "null"
+      file: null,
+      message: "",
+      display: false,
+      file_error: null,
+      disabled: true
     };
   }
   render() {
@@ -36,7 +41,7 @@ class EnrollmentDataUoload extends React.Component {
       <div className="container">
         <div className="form-group">
           <label htmlFor="enrollmentFile">
-            Please upload Enrollment information :
+            Please upload Enrollment information (CSV file only) :
           </label>
           <input
             type="file"
@@ -44,15 +49,23 @@ class EnrollmentDataUoload extends React.Component {
             className="form-control-file"
             id="enrollmentFile"
             onChange={this.onChangeHandler}
+            accept=".csv"
           />
         </div>
         <button
           type="button"
           className="btn btn-success btn-block"
           onClick={this.onClickHandler}
+          disabled={this.state.disabled}
         >
           Upload
         </button>
+        <div
+          className="alert alert-info"
+          style={{ display: this.state.display ? "block" : "none" }}
+        >
+          {this.state.message}
+        </div>
       </div>
     );
   }
