@@ -1,18 +1,30 @@
 import React from "react";
 import axios from "axios";
+var config = require("../../config");
 
 class EnrollmentDataUoload extends React.Component {
   onChangeHandler = event => {
     console.log(event.target.files[0]);
     this.setState({
-      file1: event.target.files[0]
+      file: event.target.files[0],
+      message: ""
     });
   };
   onClickHandler = () => {
     const data = new FormData();
-    data.append("file", this.state.file1);
-    data.append("file", this.state.file2);
+    data.append("file", this.state.file);
+
+    axios({
+      //send the form-data to inserttask using post method
+      enctype: "multipart/form-data",
+      url: config.urlPrefix + "uploadEnrollmentInformation",
+      method: "POST",
+      data: data
+    }).then(res => {
+      this.setState({ message: res });
+    });
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +36,7 @@ class EnrollmentDataUoload extends React.Component {
       <div className="container">
         <div className="form-group">
           <label htmlFor="enrollmentFile">
-            Please upload Enrollment information
+            Please upload Enrollment information :
           </label>
           <input
             type="file"
