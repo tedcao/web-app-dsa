@@ -32,7 +32,7 @@ const formikEnhancer = withFormik({
       .required("Please entre your phone number"),
     email: Yup.string()
       .matches(
-        /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(my.yorku)\.ca$/,
+        /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?[a-zA-Z0-9_.+-]?(yorku)\.ca$/,
         "Invalid email address, please entre your yorku email"
       )
       .required("Email is required!")
