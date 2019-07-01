@@ -23,7 +23,7 @@ class FacultySelect extends React.Component {
 
   render() {
     return (
-      <div className="col-10 select">
+      <div className="col-lg-10 col-sm-12  select">
         <Select
           class
           id="color"
@@ -54,7 +54,7 @@ class CourseSelect extends React.Component {
 
   render() {
     return (
-      <div className="col-10 select">
+      <div className="col-lg-10 col-sm-12  select">
         <Select
           id="course_section"
           options={this.props.courses}

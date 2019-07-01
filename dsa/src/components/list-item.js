@@ -24,78 +24,78 @@ class ListItem extends React.Component {
   render() {
     return (
       <div className="row item" key={this.key}>
-        <div className="col-10">
+        <div className="col-lg-10 col-sm-12">
           <div className="row">
-            <div className="col-3 name">Request ID : </div>
-            <div className="col-3">
+            <div className="col-lg-3 col-sm-12  name">Request ID : </div>
+            <div className="col-lg-3 col-sm-12 ">
               <span>{this.state.item._id}</span>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 name">Reference Number : </div>
-            <div className="col-3">
+            <div className="col-lg-3 col-sm-12  name">Reference Number : </div>
+            <div className="col-lg-3 col-sm-12 ">
               <span>{this.state.item.reference_number}</span>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 name">Student ID : </div>
-            <div className="col-3">
+            <div className="col-lg-3 col-sm-12  name">Student ID : </div>
+            <div className="col-lg-3 col-sm-12 ">
               <span>{this.state.item.student_id}</span>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 name">Student Name : </div>
-            <div className="col-3">
+            <div className="col-lg-3 col-sm-12  name">Student Name : </div>
+            <div className="col-lg-3 col-sm-12 ">
               <span>{this.state.item.name}</span>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 name">Student Email : </div>
-            <div className="col-3">
+            <div className="col-lg-3 col-sm-12  name">Student Email : </div>
+            <div className="col-lg-3 col-sm-12 ">
               <span>{this.state.item.student_email}</span>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 name">Course :</div>
-            <div className="col-3">
+            <div className="col-lg-3 col-sm-12  name">Course :</div>
+            <div className="col-lg-3 col-sm-12 ">
               <span>{this.state.item.course}</span>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 name">Section : </div>
-            <div className="col-3">
+            <div className="col-lg-3 col-sm-12  name">Section : </div>
+            <div className="col-lg-3 col-sm-12 ">
               <span>{this.state.item.section}</span>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 name">Home Faculty : </div>
-            <div className="col-6">
+            <div className="col-lg-3 col-sm-12  name">Home Faculty : </div>
+            <div className="col-lg-6 col-sm-12 ">
               <span>{this.state.item.home_faculty}</span>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 name">Instructor Email : </div>
-            <div className="col-3">
+            <div className="col-lg-3 col-sm-12  name">Instructor Email : </div>
+            <div className="col-lg-3 col-sm-12 ">
               <span>{this.state.item.instructor}</span>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 name">Supervisor Email : </div>
-            <div className="col-3">
+            <div className="col-lg-3 col-sm-12  name">Supervisor Email : </div>
+            <div className="col-lg-3 col-sm-12 ">
               <span>{this.state.item.supervisor}</span>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 name">Submitted Date : </div>
-            <div className="col-6">
+            <div className="col-lg-3 col-sm-12  name">Submitted Date : </div>
+            <div className="col-lg-6 col-sm-12 ">
               <span>{this.state.item.create_date}</span>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 name">
+            <div className="col-lg-3 col-sm-12  name">
               Registered with Counselling/Disability services :
             </div>
-            <div className="col-6">
+            <div className="col-lg-6 col-sm-12 ">
               <span>{this.state.aggrement}</span>
             </div>
           </div>
@@ -163,7 +163,7 @@ class ApproveButton extends React.Component {
     if (admin) {
       if (!modified) {
         return (
-          <div className="col-2">
+          <div className="col-lg-2 col-sm-12 ">
             <button
               type="button"
               className="btn btn-primary item_button"
@@ -186,7 +186,7 @@ class ApproveButton extends React.Component {
         );
       } else if (modified && approve) {
         return (
-          <div className="col-2">
+          <div className="col-lg-2 col-sm-12 ">
             <button
               type="button"
               className="btn btn-success active item_button"
@@ -207,7 +207,7 @@ class ApproveButton extends React.Component {
         );
       } else {
         return (
-          <div className="col-2">
+          <div className="col-lg-2 col-sm-12 ">
             <button
               type="button"
               className="btn btn-danger active item_button"
@@ -230,7 +230,7 @@ class ApproveButton extends React.Component {
     } else {
       if (!modified) {
         return (
-          <div className="col-2">
+          <div className="col-lg-2 col-sm-12 ">
             <button
               type="button"
               className="btn btn-primary item_button"
@@ -253,7 +253,7 @@ class ApproveButton extends React.Component {
         );
       } else if (modified && approve) {
         return (
-          <div className="col-2">
+          <div className="col-lg-2 col-sm-12 ">
             <button
               type="button"
               className="btn btn-success active item_button"
@@ -265,7 +265,7 @@ class ApproveButton extends React.Component {
         );
       } else {
         return (
-          <div className="col-2">
+          <div className="col-lg-2 col-sm-12 ">
             <button
               type="button"
               className="btn btn-danger active item_button"
@@ -303,21 +303,21 @@ function fileList(item) {
     file3des = item.file3_des;
     return (
       <div className="row">
-        <div className="col-3 name">First File : </div>
-        <div className="col-5">
+        <div className="col-lg-3 col-sm-12  name">First File : </div>
+        <div className="col-lg-5 col-sm-12 ">
           <a href={file1href}>{file1name}</a>
         </div>
-        <div className="col-4 description">{file1des}</div>
-        <div className="col-3 name">Second File : </div>
-        <div className="col-5">
+        <div className="col-lg-4 col-sm-12  description">{file1des}</div>
+        <div className="col-lg-3 col-sm-12  name">Second File : </div>
+        <div className="col-lg-5 col-sm-12 ">
           <a href={file2href}>{file2name}</a>
         </div>
-        <div className="col-4 description">{file2des}</div>
-        <div className="col-3 name">Third File : </div>
-        <div className="col-5">
+        <div className="col-lg-4 col-sm-12  description">{file2des}</div>
+        <div className="col-lg-3 col-sm-12  name">Third File : </div>
+        <div className="col-lg-5 col-sm-12 ">
           <a href={file3href}>{file3name}</a>
         </div>
-        <div className="col-4 description">{file3des}</div>
+        <div className="col-lg-4 col-sm-12  description">{file3des}</div>
       </div>
     );
   } else if (
@@ -332,16 +332,16 @@ function fileList(item) {
     file2des = item.file2_des;
     return (
       <div className="row">
-        <div className="col-3 name">First File : </div>
-        <div className="col-5">
+        <div className="col-lg-3 col-sm-12  name">First File : </div>
+        <div className="col-lg-5 col-sm-12 ">
           <a href={file1href}>{file1name}</a>
         </div>
-        <div className="col-4 description">{file1des}</div>
-        <div className="col-3 name">Second File : </div>
-        <div className="col-5">
+        <div className="col-lg-4 col-sm-12  description">{file1des}</div>
+        <div className="col-lg-3 col-sm-12  name">Second File : </div>
+        <div className="col-lg-5 col-sm-12 ">
           <a href={file2href}>{file2name}</a>
         </div>
-        <div className="col-4 description">{file2des}</div>
+        <div className="col-lg-4 col-sm-12  description">{file2des}</div>
       </div>
     );
   } else if (objectValue.file !== undefined) {
@@ -350,11 +350,11 @@ function fileList(item) {
     file1des = item.file1_des;
     return (
       <div className="row">
-        <div className="col-3 name">First File : </div>
-        <div className="col-5">
+        <div className="col-lg-3 col-sm-12  name">First File : </div>
+        <div className="col-lg-5 col-sm-12 ">
           <a href={file1href}>{file1name}</a>
         </div>
-        <div className="col-4 description">{file1des}</div>
+        <div className="col-lg-4 col-sm-12  description">{file1des}</div>
       </div>
     );
   } else {

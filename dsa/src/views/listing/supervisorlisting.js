@@ -2,6 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { ListItem } from "../../components/list-item";
 import axios from "axios";
+import { Link } from "react-router-dom";
 var config = require("../../config");
 
 class SupervisorListing extends React.Component {
@@ -92,9 +93,21 @@ class SupervisorListing extends React.Component {
     });
     return (
       <div className="">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <Link className="nav-link" to="/submitform">
+              Student Submit From
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/uploadStudentData">
+              Upload Data
+            </Link>
+          </li>
+        </ul>
         <div className="row">
-          <div className="col-3">Sort the list based on:</div>
-          <div className="form-check form-check-inline col-2">
+          <div className="col-lg-3 col-sm-12">Sort the list based on:</div>
+          <div className="form-check form-check-inline col-lg-2 col-sm-12">
             <input
               className="form-check-input"
               type="radio"
@@ -109,7 +122,7 @@ class SupervisorListing extends React.Component {
               Pending
             </label>
           </div>
-          <div className="form-check form-check-inline col-2">
+          <div className="form-check form-check-inline col-lg-2 col-sm-12">
             <input
               className="form-check-input"
               type="radio"
@@ -124,7 +137,7 @@ class SupervisorListing extends React.Component {
               Approved
             </label>
           </div>
-          <div className="form-check form-check-inline col-2">
+          <div className="form-check form-check-inline col-lg-2 col-sm-12">
             <input
               className="form-check-input"
               type="radio"
@@ -141,7 +154,10 @@ class SupervisorListing extends React.Component {
           </div>
         </div>
         <div className="row">
-          <label className="search-title col-5" htmlFor="course_search">
+          <label
+            className="search-title col-lg-5 col-sm-12"
+            htmlFor="course_search"
+          >
             Please enter the
             <strong>
               {" "}
@@ -151,7 +167,7 @@ class SupervisorListing extends React.Component {
             you want to filter out :
           </label>
           <input
-            className="form-control col-7"
+            className="form-control col-lg-7 col-sm-12"
             type="text"
             id="course_search"
             value={this.state.search}

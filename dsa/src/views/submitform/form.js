@@ -133,47 +133,52 @@ class MyForm extends React.Component {
           </div>
         </div>
         <div className="form-group row">
-          <label htmlFor="student_number" className="col-2 col-form-label">
+          <label
+            htmlFor="student_number"
+            className="col-lg-2 col-sm-12 col-form-label"
+          >
             Student Number
           </label>
           <input
-            className="form-control col-10"
+            className="form-control col-lg-10 col-sm-12"
             id="student_number"
             placeholder="Enter your student number"
             value={values.student_number}
             onChange={handleChange}
             onBlur={this.handleSNFieldBlur}
           />
-          <div className="col-2" />
+          <div className="col-lg-2 col-sm-12 " />
           {errors.student_number && touched.student_number && (
-            <div className="alert alert-danger col-10">
+            <div className="alert alert-danger col-lg-10 col-sm-12 ">
               {errors.student_number}
             </div>
           )}
         </div>
         <div className="form-group row">
-          <label htmlFor="name" className="col-2 col-form-label">
+          <label htmlFor="name" className="col-lg-2 col-sm-12  col-form-label">
             Name
           </label>
           <input
-            className="form-control col-10"
+            className="form-control col-lg-10 col-sm-12 "
             id="name"
             placeholder="Please entre your legal name"
             value={values.name}
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          <div className="col-2" />
+          <div className="col-lg-2 col-sm-12 " />
           {errors.name && touched.name && (
-            <div className="alert alert-danger col-10">{errors.name}</div>
+            <div className="alert alert-danger col-lg-10 col-sm-12 ">
+              {errors.name}
+            </div>
           )}
         </div>
         <div className="form-group row">
-          <label htmlFor="color" className="col-2">
+          <label htmlFor="color" className="col-lg-2 col-sm-12 ">
             Home Faculty
           </label>
           <FacultySelect
-            className="form-control col-10"
+            className="form-control col-lg-10 col-sm-12 "
             value={values.home_faculty}
             onChange={setFieldValue}
             onBlur={setFieldTouched}
@@ -182,28 +187,30 @@ class MyForm extends React.Component {
           />
         </div>
         <div className="form-group row">
-          <label htmlFor="phone" className="col-2">
+          <label htmlFor="phone" className="col-lg-2 col-sm-12 ">
             Phone
           </label>
           <input
-            className="form-control col-10"
+            className="form-control col-lg-10 col-sm-12 "
             id="phone"
             placeholder="Please entre your phone number"
             value={values.phone}
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          <div className="col-2" />
+          <div className="col-lg-2 col-sm-12 " />
           {errors.phone && touched.phone && (
-            <div className="alert alert-danger col-10">{errors.phone}</div>
+            <div className="alert alert-danger col-lg-10 col-sm-12 ">
+              {errors.phone}
+            </div>
           )}
         </div>
         <div className="form-group row">
-          <label htmlFor="email" className="col-2">
+          <label htmlFor="email" className="col-lg-2 col-sm-12 ">
             Email
           </label>
           <input
-            className="form-control col-10"
+            className="form-control col-lg-10 col-sm-12 "
             id="email"
             placeholder="Enter your email"
             type="email"
@@ -211,13 +218,15 @@ class MyForm extends React.Component {
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          <div className="col-2" />
+          <div className="col-lg-2 col-sm-12 " />
           {errors.email && touched.email && (
-            <div className="alert alert-danger col-10">{errors.email}</div>
+            <div className="alert alert-danger col-lg-10 col-sm-12 ">
+              {errors.email}
+            </div>
           )}
         </div>
         <div className="form-group row">
-          <label htmlFor="course_section" className="col-2">
+          <label htmlFor="course_section" className="col-lg-2 col-sm-12 ">
             Select your Course and Section
           </label>
           <CourseSelect
@@ -230,7 +239,7 @@ class MyForm extends React.Component {
           />
         </div>
         <div className="row">
-          <div className="form-group col-6">
+          <div className="form-group col-lg-6 col-sm-12 ">
             <label htmlFor="file">
               Please upload your supported documents!
             </label>
@@ -274,7 +283,7 @@ class MyForm extends React.Component {
               }}
             </Dropzone>
           </div>
-          <div className="form-group col-6">
+          <div className="form-group col-lg-6 col-sm-12 ">
             <span htmlFor="file1_des">First file Description</span>
             <input
               className="form-control"

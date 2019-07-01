@@ -4,7 +4,7 @@ import MyEnhancedForm from "./views/submitform/form";
 import StudentDataUpload from "./views/studentDataUpload/studentDataUpload";
 import InsturctorListing from "./views/listing/insturctorlisting";
 import SupervisorListing from "./views/listing/supervisorlisting";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 
 ////////////////////////////////////////////////////////////
@@ -48,38 +48,9 @@ function RouteConfigExample() {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <h1>
-              WEB-APP-DSA <span className="badge badge-primary">New</span>
-            </h1>
+            <h1>WEB-APP-DSA</h1>
           </div>
         </div>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
-              <li className="nav-item active">
-                <Link className="navbar-brand mb-0 h1" to="/submitform">
-                  Student Submit From
-                </Link>
-              </li>
-              <li className="nav-item active">
-                <Link className="navbar-brand mb-0 h1" to="/uploadStudentData">
-                  Upload Data
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </nav>
 
         <div className="container">
           {routes.map((route, i) => (
