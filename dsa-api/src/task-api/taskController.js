@@ -65,11 +65,11 @@ exports.insert = function(req, res) {
     var courseandsection = await req.body.courseandsection;
     var student_id = req.body.student_id;
     var name = req.body.name;
-    var student_email = req.body.student_email;
     var student_phone = req.body.student_phone;
     var home_faculty = req.body.home_faculty;
     var course = courseandsection.substring(8, 16);
     var section = courseandsection.substring(28);
+    var student_email = await tools.getStudentEmail(course, student_id);
     let instructor = await tools.getInstructor(course, section, res); //reteive instructor email form course table
     let supervisor = await tools.getSupervisor(course, section, res); // retrive supervisor email from course table
     var aggrement = req.body.aggrement;
@@ -113,7 +113,7 @@ exports.insert = function(req, res) {
           }
         );
         // send out the email
-        email.studentEmail(
+        email.verify(
           task._id,
           task.reference_number,
           name,
@@ -121,14 +121,11 @@ exports.insert = function(req, res) {
           student_phone,
           course,
           section,
-          files,
           aggrement,
           file1_des,
           file2_des,
           file3_des
         );
-        email.insturctorEmail(name, instructor, course, section);
-        email.supervisorEmail(name, supervisor, course, section);
         res.json({
           message: "New task created!",
           data: task
@@ -150,7 +147,6 @@ exports.update = function(req, res) {
     task.course = req.body.course;
     task.section = req.body.section;
     task.term = req.body.term;
-    task.student_email = req.body.student_email;
     task.student_phone = req.body.student_phone;
     task.home_faculty = req.body.home_faculty;
     task.instructor = req.body.instructor;
@@ -209,13 +205,60 @@ exports.search = function(req, res) {
   }
 };
 
+exports.verify = function(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  if (tools.decrypt(req.params.encryptcode) == req.params.student_email) {
+    Task.findById(req.params.task_id, function(err, task) {
+      if (err) res.json(err);
+      task.state = "verified";
+      task.save(function(err) {
+        if (err) res.send(err);
+        res.json({
+          message: "Task State updated to verified",
+          data: true
+        });
+        email.studentEmail(
+          task._id,
+          task.reference_number,
+          task.name,
+          task.student_email,
+          task.student_phone,
+          task.course,
+          task.section,
+          // task.files,
+          task.aggrement,
+          task.file1_des,
+          task.file2_des,
+          task.file3_des
+        );
+        email.insturctorEmail(
+          task.name,
+          task.instructor,
+          task.course,
+          task.section
+        );
+        email.supervisorEmail(
+          task.name,
+          task.supervisor,
+          task.course,
+          task.section
+        );
+      });
+    });
+  } else {
+    return res.json({
+      message: "404"
+    });
+  }
+};
+
 exports.approve = function(req, res) {
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
   Task.findById(req.params.task_id, function(err, task) {
     if (err) res.send(err);
-    task.approve = true;
-    task.modified = true;
+    task.state = "approved";
     email.taskStateUpdate(
       "Approved",
       task.name,
@@ -244,8 +287,7 @@ exports.deny = function(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   Task.findById(req.params.task_id, function(err, task) {
     if (err) res.send(err);
-    task.approve = false;
-    task.modified = true;
+    task.state = "denied";
     task.save(function(err) {
       if (err) res.json(err);
       email.taskStateUpdate(
@@ -273,7 +315,7 @@ exports.overwrite = function(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   Task.findById(req.params.task_id, function(err, task) {
     if (err) res.send(err);
-    task.modified = false;
+    task.state = "verified";
     task.save(function(err) {
       if (err) res.json(err);
       email.taskStateUpdate(

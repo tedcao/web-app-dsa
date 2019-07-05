@@ -14,7 +14,16 @@ class InsturctorListing extends React.Component {
       config.urlPrefix
     }instructor/${insturctor_email}&${encryptcode}`;
     const response = await axios.post(url);
-    this.setState({ items: response.data.data });
+    const tempItems = response.data.data;
+    let filtedPendingItem = tempItems.filter(item => {
+      if (item.state !== "pending") {
+        return true; //keep the record
+      } else {
+        return false; //drop the record
+      }
+    });
+
+    this.setState({ items: filtedPendingItem });
   }
   //set up research state when research text modified
   updateSearch(event) {
@@ -31,8 +40,8 @@ class InsturctorListing extends React.Component {
   sortPending(e) {
     const newItems = this.state.items;
     newItems.sort(function(x, y) {
-      if (x.modified === false && x.modified !== y.modified) {
-        return -1; //x then y, x is not modified and y is modified
+      if (x.state === "verified" && x.state !== y.state) {
+        return -1; //x then y,
       } else {
         return 0; // do not change
       }
@@ -43,16 +52,10 @@ class InsturctorListing extends React.Component {
   sortApproved(e) {
     const newItems = this.state.items;
     newItems.sort(function(x, y) {
-      if (x.modified !== y.modified && x.modified === true) {
-        return -1;
-      } else if (
-        x.modified === y.modified &&
-        x.approve !== y.approve &&
-        x.approve === true
-      ) {
-        return -1;
+      if (x.state === "approved" && x.state !== y.state) {
+        return -1; //x then y,
       } else {
-        return 0;
+        return 0; // do not change
       }
     });
     this.setState({ items: newItems });
@@ -61,16 +64,10 @@ class InsturctorListing extends React.Component {
   sortDenied(e) {
     const newItems = this.state.items;
     newItems.sort(function(x, y) {
-      if (x.modified !== y.modified && x.modified === true) {
-        return -1;
-      } else if (
-        x.modified === y.modified &&
-        x.approve !== y.approve &&
-        x.approve === false
-      ) {
-        return -1;
+      if (x.state === "denied" && x.state !== y.state) {
+        return -1; //x then y,
       } else {
-        return 0;
+        return 0; // do not change
       }
     });
     this.setState({ items: newItems });
@@ -79,6 +76,7 @@ class InsturctorListing extends React.Component {
   render() {
     // search function, filte the items state
     // indexOf if not find return -1, !== -1 means found
+
     let filtedItem = this.state.items.filter(item => {
       if (
         item.course.indexOf(this.state.search) !== -1 ||
@@ -91,6 +89,7 @@ class InsturctorListing extends React.Component {
         return false; //drop the record
       }
     });
+
     return (
       <div className="">
         <div className="row">

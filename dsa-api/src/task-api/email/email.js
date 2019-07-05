@@ -5,6 +5,7 @@ var account = config.emailAccount;
 var password = config.emailPassward;
 var filePrefix = "../../uploads/";
 var urlPrefix = config.urlPrefix;
+var apiUrlPrefix = config.apiUrlPrefix;
 
 let transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -15,6 +16,49 @@ let transporter = nodemailer.createTransport({
     pass: password
   }
 });
+
+async function verify(
+  _id,
+  reference_number,
+  name,
+  student_email,
+  student_phone,
+  course,
+  section,
+  aggrement,
+  file1_des,
+  file2_des,
+  file3_des
+) {
+  var hashedEmail = crypt.encrypt(student_email);
+  var studentVerifyUrl =
+    apiUrlPrefix + "verify/" + student_email + "&" + hashedEmail + "&" + _id;
+
+  const mailOptions = {
+    from: account, // sender address
+    to: student_email,
+    subject: `Recipt of your exam deffer request`,
+    html: `<p>Hi ${name} <p>
+    <div>Here is the information you submitted</div>
+    <div><strong>Your Request ID is: </strong>${_id}</div>
+    <div><strong>Your Reference Number is: </strong>${reference_number}</div>
+    <div><strong>Your Phone number: </strong>${student_phone}</div>
+    <div><strong>Course: </strong>${course}</div>
+    <div><strong>Section: </strong>${section}</div>
+    <div><strong>Check attachment for uploaded files</strong></div>
+    <div><strong>File descriptions (1st file): </strong>${file1_des}</div>
+    <div><strong>File descriptions (2ed file): </strong>${file2_des}</div>
+    <div><strong>File descriptions (3rd file): </strong>${file3_des}</div>
+    <div><strong>Registered with Counselling/Disability services: </strong>${aggrement}</div>
+    <div><a href = ${studentVerifyUrl}>Click to confirm submission of DSA > </a></div>
+    <br />
+    <br />
+    <div>Sent by Web_DSA system</div>`
+  };
+  transporter.sendMail(mailOptions);
+  // let info = await transporter.sendMail(mailOptions);
+  // return info;
+}
 
 //email sent to student after form submitted
 async function studentEmail(
@@ -261,6 +305,7 @@ async function taskStateUpdate(
 //scheduled email notified number of task need attention on
 function scheduledEmail() {}
 
+exports.verify = verify;
 exports.studentEmail = studentEmail;
 exports.insturctorEmail = insturctorEmail;
 exports.supervisorEmail = supervisorEmail;

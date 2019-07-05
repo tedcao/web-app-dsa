@@ -65,6 +65,11 @@ var taskSchema = mongoose.Schema({
     require: true,
     default: false
   },
+  state: {
+    type: String,
+    default: "pending"
+    //pending, verified, approved, denied
+  },
   aggrement: {
     type: Boolean,
     required: true,

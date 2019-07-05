@@ -29,13 +29,13 @@ const formikEnhancer = withFormik({
     phone: Yup.string()
       .min(10, "Please enter a valid phone number")
       .max(10, "Please enter a valid phone number")
-      .required("Please entre your phone number"),
-    email: Yup.string()
-      .matches(
-        /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?[a-zA-Z0-9_.+-]?(yorku)\.ca$/,
-        "Invalid email address, please entre your yorku email"
-      )
-      .required("Email is required!")
+      .required("Please entre your phone number")
+    // email: Yup.string()
+    //   .matches(
+    //     /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?[a-zA-Z0-9_.+-]?(yorku)\.ca$/,
+    //     "Invalid email address, please entre your yorku email"
+    //   )
+    //   .required("Email is required!")
   }),
   mapPropsToValues: props => ({
     student_number: "",
@@ -61,7 +61,7 @@ const formikEnhancer = withFormik({
     formdata.append("name", payload.name); //not used
     formdata.append("home_faculty", payload.home_faculty.value);
     formdata.append("student_phone", payload.phone);
-    formdata.append("student_email", payload.email);
+    // formdata.append("student_email", payload.email);
     formdata.append("courseandsection", payload.course.value);
     formdata.append("aggrement", payload.aggrement);
     formdata.append("file1_des", payload.file1_des);
@@ -79,7 +79,7 @@ const formikEnhancer = withFormik({
       data: formdata
     }).then(res => {
       alert(
-        "Submitted, Check your email for recipt and reference number. If email was not arrive in 5 mins, please try again later."
+        "Submitted, Check your email to verify your submission. If email was not arrive in 5 mins, please try again later."
       );
       console.log(res);
     });
@@ -205,7 +205,7 @@ class MyForm extends React.Component {
             </div>
           )}
         </div>
-        <div className="form-group row">
+        {/* <div className="form-group row">
           <label htmlFor="email" className="col-lg-2 col-sm-12 ">
             Email
           </label>
@@ -224,7 +224,7 @@ class MyForm extends React.Component {
               {errors.email}
             </div>
           )}
-        </div>
+        </div> */}
         <div className="form-group row">
           <label htmlFor="course_section" className="col-lg-2 col-sm-12 ">
             Select your Course and Section

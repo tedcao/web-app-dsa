@@ -93,6 +93,7 @@ exports.uploadEnrollmentInformation = function(req, res) {
             enrollment.section = row[1];
             enrollment.term = row[2];
             enrollment.student = row[3];
+            enrollment.student_email = row[4];
             enrollment.save(function(err) {
               if (err) res.json(err);
               console.log((ROW = `${JSON.stringify(row)}`));

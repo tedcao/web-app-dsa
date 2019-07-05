@@ -51,6 +51,10 @@ router
   .route("/instructor/:instructor_email&:encryptcode")
   .post(taskController.search); //search for tasks based on instructor name
 
+router
+  .route("/verify/:student_email&:encryptcode&:task_id")
+  .get(taskController.verify);
+
 router.route("/approve/:task_id").post(taskController.approve); //approve the task with corresponding task_id
 router.route("/deny/:task_id").post(taskController.deny); //deny the task with corresponding task_id
 router.route("/overwrite/:task_id").post(taskController.overwrite);

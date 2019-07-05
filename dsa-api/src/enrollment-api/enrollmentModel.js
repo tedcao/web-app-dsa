@@ -19,6 +19,10 @@ var enrollmentSchema = mongoose.Schema({
     type: Number,
     require: true
   },
+  student_email:{
+    type:String,
+    require: true
+  },
   dsa_submitted: {
     type: Boolean,
     default: false,

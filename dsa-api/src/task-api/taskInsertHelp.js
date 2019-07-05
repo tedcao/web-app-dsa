@@ -1,4 +1,5 @@
 Course = require("../course-api/courseModel");
+Enrollment = require("../enrollment-api/enrollmentModel");
 Task = require("./taskModel");
 var hashConfig = require("../../config"); //hash passward and information
 var crypto = require("crypto");
@@ -13,10 +14,24 @@ async function getInstructor(course, section, res) {
     function(err, courseList) {
       if (err) {
         res.send(err);
+        console.log(err);
       }
     }
   );
   return instructor_email[0].instructor;
+}
+
+async function getStudentEmail(course, student_id) {
+  let student_email = await Enrollment.find(
+    { student: student_id, course: course },
+    function(err, student_email) {
+      if (err) {
+        res.send(err);
+        console.log(err);
+      }
+    }
+  );
+  return student_email[0].student_email;
 }
 
 //get the supervisor email from course table
@@ -26,6 +41,7 @@ async function getSupervisor(course, section, res) {
     function(err, courseList) {
       if (err) {
         res.send(err);
+        console.log(err);
       }
     }
   );
@@ -50,5 +66,6 @@ function decrypt(text) {
 
 exports.getInstructor = getInstructor;
 exports.getSupervisor = getSupervisor;
+exports.getStudentEmail = getStudentEmail;
 exports.encrypt = encrypt;
 exports.decrypt = decrypt;

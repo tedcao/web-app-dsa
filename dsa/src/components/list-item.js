@@ -102,8 +102,9 @@ class ListItem extends React.Component {
           {fileList(this.state.item)}
         </div>
         <ApproveButton
-          modified={this.state.item.modified}
-          approve={this.state.item.approve}
+          // modified={this.state.item.modified}
+          // approve={this.state.item.approve}
+          state={this.state.item.state}
           id={this.state.item._id}
           admin={this.state.admin}
         />
@@ -114,8 +115,9 @@ class ListItem extends React.Component {
 
 class ApproveButton extends React.Component {
   state = {
-    modified: this.props.modified,
-    approve: this.props.approve,
+    // modified: this.props.modified,
+    // approve: this.props.approve,
+    state: this.props.state,
     id: this.props.id,
     admin: this.props.admin
   };
@@ -126,7 +128,7 @@ class ApproveButton extends React.Component {
     const response = await axios.post(approveRequest);
     if (response.data.data === true) {
       //change the state after success feedback send back
-      this.setState({ modified: true, approve: true });
+      this.setState({ state: "approved" });
     } else {
       console.log("Bad connection");
     }
@@ -138,7 +140,7 @@ class ApproveButton extends React.Component {
     const response = await axios.post(denyRequest);
     if (response.data.data === true) {
       //change the state after success feedback send back
-      this.setState({ modified: true, approve: false });
+      this.setState({ state: "denied" });
     } else {
       console.log("Bad connection");
     }
@@ -150,18 +152,18 @@ class ApproveButton extends React.Component {
     const response = await axios.post(overwriteRequest);
     if (response.data.data === true) {
       //change the state after success feedback send back
-      this.setState({ modified: false });
+      this.setState({ state: "verified" });
     } else {
       console.log("Bad connection");
     }
   }
 
   render() {
-    var modified = this.state.modified;
-    var approve = this.state.approve;
+    // var modified = this.state.modified;
+    var state = this.state.state;
     var admin = this.state.admin;
     if (admin) {
-      if (!modified) {
+      if (state === "verified") {
         return (
           <div className="col-lg-2 col-sm-12 ">
             <button
@@ -184,7 +186,7 @@ class ApproveButton extends React.Component {
             </button>
           </div>
         );
-      } else if (modified && approve) {
+      } else if (state === "approved") {
         return (
           <div className="col-lg-2 col-sm-12 ">
             <button
@@ -228,7 +230,7 @@ class ApproveButton extends React.Component {
         );
       }
     } else {
-      if (!modified) {
+      if (state === "verified") {
         return (
           <div className="col-lg-2 col-sm-12 ">
             <button
@@ -251,7 +253,7 @@ class ApproveButton extends React.Component {
             </button>
           </div>
         );
-      } else if (modified && approve) {
+      } else if (state === "approved") {
         return (
           <div className="col-lg-2 col-sm-12 ">
             <button

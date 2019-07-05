@@ -26,6 +26,8 @@ exports.insert = function(req, res) {
   enrollment.section = req.body.section;
   enrollment.term = req.body.term;
   enrollment.student = req.body.student;
+  enrollment.student_email = req.body.student_email;
+  enrollment.dsa_submitted = false;
 
   // save the enrollment and check for errors
   enrollment.save(function(err) {
@@ -47,6 +49,7 @@ exports.update = function(req, res) {
     enrollment.term = req.body.term;
     enrollment.student = req.body.student;
     enrollment.dsa_submitted = req.body.dsa_submitted;
+    enrollment.student_email = req.body.student_email;
 
     // save the Enrollment information and check for errors
     enrollment.save(function(err) {
