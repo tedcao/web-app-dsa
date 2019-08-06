@@ -23,3 +23,5 @@ File Structure overview: - src
 --taskModel.js
 -uploads
 --api-routes.js
+
+Allowed time on enable the course DSA submission can be found in enrollment-api/enrollmentController.js file

@@ -119,7 +119,7 @@ async function formate(enrollment) {
     var diff = new Date() - courseInfo[0].exam_date; // determine the time difference between exam date and current date
 
     var result = "Course: " + course + "   Section: " + section;
-    if (diff < allowedTime && dsa_submitted === false) {
+    if (diff > 0 && diff < allowedTime && dsa_submitted === false) {
       list.push({ value: result, label: result });
     } else if (diff > allowedTime) {
       list.push({
